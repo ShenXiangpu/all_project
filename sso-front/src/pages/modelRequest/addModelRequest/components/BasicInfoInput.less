@@ -1,0 +1,88 @@
+.basicContainer {
+    padding-top: 30px;
+}
+
+@fontS: 18px;
+@height: 20px;
+@color3: #333;
+
+.titleContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .left,
+    .right {
+        height: @height;
+    }
+
+    .left {
+        width: 2px;
+        background-color: @color3;
+    }
+
+    .right {
+        line-height: @height;
+        color: @color3;
+        font-weight: 700;
+        font-size: @fontS;
+        margin-left: 5px;
+    }
+
+}
+
+.span {
+    display: inline-block;
+    padding: 0 10px;
+}
+
+.inputSty {
+    height: 23px;
+    padding: 2px 6px;
+    border: 0;
+    border-bottom: 1px solid #d9d9d9;
+    outline: none;
+    border-radius: 0;
+}
+
+.inputSty:focus {
+    outline: none;
+}
+
+.elseEle {
+    :global {
+        .ant-form-item-control {
+            line-height: 20px;
+            height: 20px;
+        }
+    }
+}
+
+.Technode {
+
+    .inputSty {
+        height: 23px;
+        padding: 2px 6px;
+        border: 0;
+        border-bottom: 1px solid #d9d9d9;
+        outline: none;
+        border-radius: 0;
+    }
+
+    :global {
+        .ant-form-item-control {
+            // line-height: 20px;
+            // height: 20px;
+        }
+    }
+}
+
+.select {
+    display: flex;
+    justify-content: flex-start;
+}
+
+
+.bottomBtn {
+    text-align: center;
+}

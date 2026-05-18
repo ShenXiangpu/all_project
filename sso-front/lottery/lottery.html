@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抽奖</title>
+    <style>
+        .turntable-wrap {
+            position: relative;
+            overflow: hidden;
+            margin: 50px auto;
+            width: 80vw;
+            height: 80vw;
+            border: 7px solid #e6a120;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #df3636;
+        }
+
+        @keyframes white-to-yellow {
+            0% {
+                background: #fff;
+            }
+
+            100% {
+                background: #f0ba09;
+            }
+        }
+
+        .turntable-wrap .light {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f3c305;
+            animation: rotate 5s linear infinite;
+        }
+
+        .turntable-wrap .light span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 10px;
+            height: 100%;
+            transform-origin: center center;
+        }
+
+        .turntable-wrap .light span:before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .turntable-wrap .light span:nth-of-type(even):before {
+            background: #fff;
+            animation: white-to-yellow 1s linear infinite;
+        }
+
+        .turntable-wrap .light span:nth-of-type(odd):before {
+            background: #f3a806;
+            animation: white-to-yellow 1s linear reverse infinite;
+        }
+
+        .turntable-wrap .turntable {
+            width: 70vw;
+            height: 70vw;
+            position: absolute;
+            top: 5vw;
+            left: 5vw;
+            /* transform: translate(-50%); */
+        }
+
+        .turntable-wrap .turntable .bg {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            background: #fff;
+            border: 1px solid #f5f3ed;
+            border-radius: 50%;
+            transform: rotate(90deg);
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .turntable-wrap .turntable .bg li {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 1px;
+            height: 100%;
+            background: #dfd8be;
+            transform-origin: center center;
+        }
+
+        .turntable-wrap .turntable .gift {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            transform: rotate(68deg);
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .turntable-wrap .turntable .gift li {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 45%;
+            height: 45%;
+            transform-origin: right bottom;
+        }
+
+        .turntable-wrap .turntable .gift li span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: block;
+            width: 50px;
+            height: 53px;
+            margin: auto;
+            background: yellow;
+            transform: rotate(-45deg);
+            text-align: center;
+            line-height: 100px;
+            border-radius: 5px;
+            background: #f23c3c;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .turntable-wrap .turntable .gift li:not(.no-gift) span:before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 50px;
+            height: 1px;
+            background: #fff;
+        }
+        /* .fontSize {
+            font-size: 10px !important;
+        } */
+        .turntable-wrap .turntable .gift li.no-gift span {
+            background: #fff;
+            line-height: 30px;
+            color: #e2ae1d;
+            font-size: 12px;
+        }
+
+        .turntable-wrap .pointer {
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            margin: -23px auto;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #fff;
+            border: 5px solid #fff;
+            box-shadow: 0 0 0 5px #ff0000;
+            text-align: center;
+            line-height: 16px;
+            color: #ff0000;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .turntable-wrap .pointer:before {
+            content: '';
+            position: absolute;
+            top: -58px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: 0;
+            border-style: solid;
+            border-color: transparent transparent #ff0000 transparent;
+            border-width: 25px 10px 25px 10px;
+        }
+
+        #lottery-content {
+            height: 40px;
+            text-align: center;
+            margin: 10px 0 10px 0;
+            font-size: 25px;
+            color: #df3636;
+        }
+
+        #wrapper {
+            /* width: 100px; */
+            height: 30px;
+            line-height: 30px;
+            overflow: hidden;
+            /* margin: 50px auto; */
+            /* border: 1px solid #000; */
+            text-align: center;
+        }
+
+        #wrapper li {
+            list-style-type: none;
+        }
+    </style>
+</head>
+
+<body style="background-color: darkorange;">
+    <div class="turntable-wrap">
+        <div class="light" id="turntable_light"></div>
+        <div class="turntable" id="turntable">
+            <ul class="bg" id="turntable_bg"></ul>
+            <ul class="gift" id="turntable_gift"></ul>
+        </div>
+        <div class="pointer disabled" id="turntable_pointer" onclick="gameStart()">点击抽奖</div>
+    </div>
+    <div id="lottery-content">
+
+    </div>
+    <div>
+        <table cellspacing="0" style="width: 80%;color: #df3636;margin: 0 auto;">
+
+            <tr>
+                <td>一等奖:</td>
+                <td style="text-align: right;">精品手持小风扇</td>
+                <!-- <td>7个</td> -->
+            </tr>
+            <tr>
+                <td>二等奖:</td>
+                <td style="text-align: right;">金属手机支架</td>
+                <!-- <td>30个</td> -->
+            </tr>
+            <tr>
+                <td>三等奖:</td>
+                <td style="text-align: right;">定制小礼品</td>
+                <!-- <td>53个</td> -->
+            </tr>
+            <tr>
+                <td>四等奖</td>
+                <td style="text-align: right;">谢谢参与</td>
+            </tr>
+        </table>
+    </div>
+    <div style="width: 80%;color: #df3636;margin: 10px auto;">
+        <div style="color:#ff0000">中奖信息：</div>
+        <div id="wrapper">
+            <ul id="content" style="color:#ff0000;text-align: center;">
+            </ul>
+            <ul id="fakeContent"></ul>
+        </div>
+    </div>
+    <script>
+        //接收上个页面传递的参数
+        var props = window.location.search.substring(1, location.search.length);
+        var propsArr = props.split('=')
+        var phone = propsArr[1]
+        // 初始化灯
+        var lightNum = 18;
+        var itemNum = 8;
+        var isGoing = false;
+        let lotteryel = document.getElementById('lottery-content');
+        //查找已获奖用户，进行轮播
+        startRequestGetList("GET", 'https://eda.chip-cloud.com/service/zkxy-vmware-api/iccad/getLotteryResultList', true, null)
+
+        let lightFragment = document.createDocumentFragment();
+        for (let i = 0; i < lightNum; i++) {
+            let lightItem = document.createElement('span');
+            let deg = (360 / lightNum) * i
+            lightItem.style.transform = `rotate(${deg}deg)`;
+            lightFragment.appendChild(lightItem);
+        }
+        var light = document.getElementById('turntable_light')
+        console.log(light);
+        light.appendChild(lightFragment);
+        // 初始化转盘背景
+        let bgFragment = document.createDocumentFragment();
+        for (let i = 0; i < itemNum; i++) {
+            let bgItem = document.createElement('li');
+            let deg = (360 / itemNum) * i
+            bgItem.style.transform = `rotate(${deg}deg)`;
+            bgItem.style.listStyle = 'none'
+            bgFragment.appendChild(bgItem);
+        }
+        var bg = document.getElementById('turntable_bg')
+        bg.appendChild(bgFragment);
+        let typeMap = { 1: '一等奖', 2: '二等奖', 3: '三等奖', 4: '谢谢参与', 5: '一等奖', 6: '二等奖', 7: '三等奖', 8: '谢谢参与' }
+        let typeClassMap = { 1: 'no-gift', 2: 'no-gift', 3: 'no-gift', 4: 'no-gift', 5: 'no-gift', 6: 'no-gift', 7: 'no-gift', 8: 'no-gift', }
+
+        let lottery = [
+            {
+                location: 1, // 位置
+                type: 1, // 中奖
+                rate: 30, // 中奖比例 1-100
+            },
+            {
+                location: 2,
+                type: 2, // 未中奖
+                rate: 20
+            },
+            { location: 3, type: 3, rate: 10 },
+            { location: 4, type: 4, rate: 20 },
+            { location: 5, type: 5, rate: 10 },
+            { location: 6, type: 6, rate: 10 },
+            { location: 7, type: 7, rate: 10 },
+            { location: 8, type: 8, rate: 10 }
+        ];
+        // 初始化转盘上的中奖图
+        let giftFragment = document.createDocumentFragment();
+        for (let i = 0; i < itemNum; i++) {
+            let giftItem = document.createElement('li');
+            let deg = (360 / itemNum) * i;
+            giftItem.style.transform = `rotate(${deg}deg)`;
+            giftItem.style.listStyle = 'none'
+            giftItem.className = typeClassMap[lottery[i].type];
+            let span = document.createElement('span');
+            span.innerHTML = typeMap[lottery[i].type];
+            giftItem.appendChild(span);
+            giftFragment.appendChild(giftItem)
+        }
+        var gift = document.getElementById('turntable_gift')
+        gift.appendChild(giftFragment);
+        // 奖项对应旋转角度
+        var randomNum = {
+
+            1: 158,
+            2: 112,
+            3: 67,
+            4: 22
+        }
+        //数字对应奖项
+        var lotterys = {
+            '1': '一等奖',
+            '2': '二等奖',
+            '3': '三等奖',
+            '4': '谢谢参与',
+        }
+        // var lotterys = [
+        //     {
+        //         index: '1',
+        //         name: '一等奖',
+        //         deg: 158,
+        //         desc: '小米榨汁机1'
+        //     },
+        //     {
+        //         index: '2',
+        //         name: '二等奖',
+        //         deg: 112,
+        //         desc: '小米榨汁机2'
+        //     },
+        //     {
+        //         index: '3',
+        //         name: '三等奖',
+        //         deg: 67,
+        //         desc: '小米榨汁机3'
+        //     },
+        //     {
+        //         index: '4',
+        //         name: '四等奖',
+        //         deg: 22,
+        //         desc: '小米榨汁机4'
+        //     }
+        // ]
+        var xmlhttp;
+        //创建xmlhttprequest对象
+        function createXMLHttpRequest() {
+            xmlhttp = new XMLHttpRequest();  //这里要判断IE的写法
+        }
+        function startRequest(method, url, flag, obj) {
+            createXMLHttpRequest();
+            xmlhttp.open(method, url, flag);
+            xmlhttp.setRequestHeader("content-type", "application/json");
+            xmlhttp.setRequestHeader('chipcloud_innercall', 'true')
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200 || xmlhttp.status == 0) {
+                        var txt = xmlhttp.responseText;
+                        txt = JSON.parse(txt)
+                        console.log(txt)
+                        if (txt && txt.flag) {
+                            // 1. 随机中奖结果
+                            // 从1-100之间得到一个随机数，看这个随机数在中奖设置的范围，得到最终中奖的项
+                            //缓存获奖结果
+                            // debugger
+                            let randomRate = txt.resData
+                            // 2. 计算旋转角度, 需要多转5圈，达转1圈用时1s, 到旋转的效果
+                            let rotateItemDeg = (randomRate - 1) * (360 / lottery.length); // 每个item旋转角度, 第一个不用旋转
+                            let rotate = randomNum[randomRate] + 5 * 360;
+                            let rotateSpeed = (rotateItemDeg / 360 * 1 + 5).toFixed(2);
+                            // 重置转盘样式
+                            var turntable = document.getElementById('turntable');
+                            turntable.removeAttribute('style');
+                            // 保证下一次旋转动画生效
+                            setTimeout(() => {
+                                turntable.style.transform = `rotate(${rotate}deg)`;
+                                turntable.style.transition = `transform ${rotateSpeed}s ease-out`;
+                            }, 10)
+
+                            // 3. 动画结束，显示中奖结果，中奖结果如何显示，视实际情况而定
+                            setTimeout(() => {
+                                isGoing = false;
+                                if (randomRate == '4') {
+                                    lotteryel.innerHTML = `<span class='lottery-span' >谢谢参与<span>`
+                                } else {
+                                    lotteryel.innerHTML = `恭喜您已中<span class='lottery-span' >${lotterys[txt.resData]}<span>`
+                                }
+                            }, rotateSpeed * 1000);
+                        } else {
+                            lotteryel.innerHTML = `<span class='lottery-span' >${txt.errMessage}<span>`
+                        }
+                    } else {
+                    }
+                } else {
+
+                }
+            };
+            xmlhttp.send(JSON.stringify(obj));
+        }
+
+        function gameStart() {
+            if (isGoing) {
+                return
+            }
+            isGoing = true;
+            var userInfo = {
+                'phone': phone
+            }
+            startRequest("POST", 'https://eda.chip-cloud.com/service/zkxy-vmware-api/iccad/lottery', true, userInfo)
+        }
+
+        var content = document.getElementById("content");
+        var fakeContent = document.getElementById("fakeContent");
+        var wrapper = document.getElementById("wrapper");
+        function roll(t) {
+            // 开始无滚动时设为0
+            wrapper.scrollTop = 0;
+            // 设置定时器，参数t用在这为间隔时间（单位毫秒），参数t越小，滚动速度越快
+            var timer = setInterval(rollStart, t);
+            // 鼠标移入div时暂停滚动
+            wrapper.onmouseover = function () {
+                clearInterval(timer);
+                timer = null
+            };
+            // 鼠标移出div后继续滚动
+            wrapper.onmouseout = function () {
+                timer = setInterval(rollStart, t);
+            }
+        }
+        // 开始滚动函数
+        function rollStart() {
+            // 正常滚动不断给scrollTop的值+1,当滚动高度大于列表内容高度时恢复为0
+            if (wrapper.scrollTop >= content.scrollHeight) {
+                wrapper.scrollTop = 0;
+            } else {
+                wrapper.scrollTop++;
+            }
+        }
+        window.onload = roll(50);
+        function startRequestGetList(method, url, flag, obj) {
+            createXMLHttpRequest();
+            xmlhttp.open(method, url, flag);
+            xmlhttp.setRequestHeader("content-type", "application/json");
+            xmlhttp.setRequestHeader('chipcloud_innercall', 'true')
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200 || xmlhttp.status == 0) {
+                        var txt = xmlhttp.responseText;
+                        txt = JSON.parse(txt)
+                        console.log(txt)
+                        if (txt && txt.flag) {
+                            let resData = txt.resData
+                            let lotteryResult = resData.lottery_result
+                            let lotteryList = []
+                            lotteryResult.map(item => {
+                                let itemArr = item.split(':')
+                                var reg = /1(\d{2})\d{4}(\d{4})/g;
+                                if (itemArr[1] != '4') {
+                                    let data = {
+                                        phone: itemArr[0].replace(reg, "1$1****$2"),
+                                        name: lotterys[itemArr[1]],
+                                    }
+                                    let liItem = document.createElement('li');
+                                    // giftItem.className = typeClassMap[lottery[i].type];
+                                    let span1 = document.createElement('span');
+                                    let span2 = document.createElement('span');
+                                    span1.innerHTML = data.phone + '  获得';
+                                    span2.innerHTML = data.name;
+                                    liItem.appendChild(span1);
+                                    liItem.appendChild(span2);
+                                    content.appendChild(liItem)
+                                }
+                            })
+                            fakeContent.innerHTML = content.innerHTML;
+                        } else {
+                        }
+                    } else {
+                    }
+                } else {
+                }
+            };
+            xmlhttp.send(null);
+        }
+    </script>
+</body>
+
+</html>

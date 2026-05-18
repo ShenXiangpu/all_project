@@ -1,0 +1,107 @@
+.logContent {
+  padding: 10px 10px 10px 16px;
+  height: 100%;
+  overflow: auto;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.logContent::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/*定义滑块 内阴影+圆角*/
+.logContent::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: white;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+.logContent::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: transparent;
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+.logRoller {
+  height: 500px;
+  position: relative;
+  min-height: 300px;
+  // background-color: #3c444f;
+  color: #bbb;
+
+  :global {
+    .ace_search {
+      top: 54px;
+    }
+  }
+
+  .logControl {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    z-index: 1;
+
+    :global {
+      .ant-btn-ghost {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .ant-btn-ghost:hover,
+      .ant-btn-ghost:focus {
+        color: #40a9ff;
+      }
+    }
+  }
+
+  .logTopControl {
+    top: 10px;
+    bottom: auto;
+  }
+}
+
+.showMax {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+
+  :global {
+    .ace_editor {
+      height: auto !important;
+      width: auto !important;
+      border: 0;
+      margin: 0;
+      position: fixed !important;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+}
+
+.modal {
+  :global(.ant-modal-body) {
+    padding: 2px;
+  }
+}
+
+.btns {
+  :global .ant-btn {
+    opacity: 0.5;
+    > i {
+      color: #3c444f;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: #3c444f;
+      opacity: 1;
+    }
+  }
+}

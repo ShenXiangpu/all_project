@@ -1,0 +1,163 @@
+@mainColor: #108ee9;
+@mainTextSize: 12px;
+@bottonTextSize: 12px;
+@errorColor: red;
+
+@h-row: 45px;
+
+.filePanel {
+  width: 100%;
+  // margin-top: 10px;
+  box-shadow: 0 2px 12px 1px rgba(0, 0, 0, 0.1);
+
+  >h2 {
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  .fileList {
+    position: relative;
+    height: 360px;
+    overflow-y: auto;
+    background-color: rgb(250, 250, 250);
+  }
+
+  .fileItem {
+    position: relative;
+    height: @h-row;
+    line-height: @h-row;
+    padding: 0 10px;
+    border-bottom: 1px solid #ccc;
+    background-color: #fff;
+    z-index: 1;
+    margin-bottom: 0;
+
+    >li {
+      display: inline-block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .fileType {
+    width: 32px;
+    line-height: 32px;
+  }
+
+  .svg {
+    font-size: 24px;
+  }
+
+  .fileName {
+    width: 42%;
+  }
+
+  .fileSize {
+    width: 20%;
+    margin-left: 10px;
+  }
+
+  .fileStatus {
+    width: 20%;
+  }
+
+  .fileOperate {
+    width: 15%;
+
+    >a {
+      padding: 10px 5px;
+      cursor: pointer;
+      color: #666;
+      opacity: 0.8;
+      font-size: 12px;
+
+      &:hover {
+        color: #1890ff;
+      }
+    }
+  }
+
+  .fileType {
+    &text {
+      background: url(../../assets/upload/file-text.png);
+    }
+
+    &video {
+      background: url(../../assets/upload/file-video.png);
+    }
+
+    &image {
+      background: url(../../assets/upload/file-image.png);
+    }
+
+    &zip {
+      background: url(../../assets/upload/file-zip.png);
+    }
+
+    &config {
+      background: url(../../assets/upload/file-config.png);
+    }
+  }
+
+  .progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: @h-row - 1;
+    width: 0;
+    background-color: #e2edfe;
+    z-index: -1;
+  }
+
+  .noFile {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+  }
+}
+
+.modal {
+  :global {
+    .ant-modal-body {
+      padding: 0;
+    }
+
+    .ant-modal-header {
+      padding: 0;
+      height: 50px;
+
+      .ant-modal-title {
+        width: 92.5%;
+        height: 100%;
+        line-height: 50px;
+
+        label {
+          margin-left: 10px;
+        }
+
+        span {
+          height: 100%;
+          right: 0;
+          color: rgba(0, 0, 0, 0.45);
+          width: 30px;
+          text-align: center;
+          float: right;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .ant-modal-close-x {
+      width: 40px;
+    }
+  }
+}

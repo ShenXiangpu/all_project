@@ -1,0 +1,29 @@
+@shadow-1: 4px 4px 20px 0 rgba(0, 0, 0, .01);
+
+.pages {
+  background: #fff;
+  padding: 24px;
+  box-shadow: @shadow-1;
+  // min-height: ~'calc(100vh - 200px)';
+  min-height: ~'calc(100vh - 160px)';
+  position: relative;
+}
+
+@media (min-width: 780px) {
+  .pages {
+    min-width: 1103px;
+  }
+}
+
+@media (max-width: 767px) {
+  .pages {
+    width: ~'calc(100vw - 120px)';
+  }
+
+  :global {
+    .ant-empty-image img {
+      width: 100%;
+    }
+  }
+}
+

@@ -1,0 +1,39 @@
+.content {
+  min-height: calc(100vh - 160px);
+  min-width: 1103px;
+  position: relative;
+  overflow: hidden;
+}
+
+.alink {
+  width: calc(100% - 45px);
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.formFilter {
+  :global {
+    .ant-form-item {
+      display: flex;
+      margin-right: 15px;
+      margin-bottom: 24px;
+      > .ant-form-item-label {
+        // width: auto;
+        // padding-right: 8px;
+        line-height: 32px;
+      }
+      .ant-form-item-control {
+        line-height: 32px;
+      }
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+
+  .submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}

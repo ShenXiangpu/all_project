@@ -1,0 +1,27 @@
+.vMain {
+  margin: auto;
+  display: inline-block;
+  width: 100%;
+  // margin-top: -36px;
+
+  .left {
+    width: 300px;
+    padding-right: 15px;
+    float: left;
+    // margin-top: 36px;
+  }
+
+  .right {
+    padding: 0 0 15px 15px;
+    float: left;
+    width: calc(100% - 305px);
+    border-left: 1px solid #e8e8e8;
+  }
+
+  :global {
+    .ant-table-tbody>tr.ant-table-row-selected td {
+      color: inherit;
+      background: #e6f7ff;
+    }
+  }
+}

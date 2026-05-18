@@ -1,0 +1,67 @@
+---
+description: 函数驼峰命名，组件大驼峰（PascalCase）
+alwaysApply: true
+---
+
+# 命名规范
+
+## 函数与方法：小驼峰（camelCase）
+
+- 普通函数、方法、组合式 API 中的函数、工具函数、事件处理函数均使用 **camelCase**。
+- 常量若表示固定配置对象，可用 `UPPER_SNAKE_CASE`；函数名仍用 camelCase。
+
+```javascript
+// ❌ BAD
+function Get_User_List() {}
+const handle_click = () => {}
+export function FetchData() {}
+
+// ✅ GOOD
+function getUserList() {}
+const handleClick = () => {}
+export function fetchData() {}
+```
+
+## 组件：大驼峰（PascalCase）
+
+- Vue 单文件组件（`.vue`）的 **文件名**、**`name` 选项**、**`components` 注册名**、**模板中的自定义标签** 使用 **PascalCase**。
+- 目录名与组件名保持一致时优先 PascalCase（如 `BigFileUpload/index.vue`）。
+
+```vue
+<!-- ❌ BAD：组件名 -->
+<script>
+export default { name: 'userProfile' }
+</script>
+<template>
+  <user-card />
+</template>
+
+<!-- ✅ GOOD -->
+<script>
+export default { name: 'UserProfile' }
+</script>
+<template>
+  <UserCard />
+</template>
+```
+
+```javascript
+// ❌ BAD
+import userCard from './userCard.vue'
+components: { userCard }
+
+// ✅ GOOD
+import UserCard from './UserCard.vue'
+components: { UserCard }
+```
+
+## 其他约定
+
+| 类型 | 风格 | 示例 |
+|------|------|------|
+| 函数 / 方法 | camelCase | `formatDate`, `handleSubmit` |
+| Vue 组件 | PascalCase | `AddDialog`, `SidebarItem` |
+| 变量 / 属性 | camelCase | `userName`, `isLoading` |
+| 类（如有） | PascalCase | `ApiClient` |
+
+新增或重命名代码时遵循上表；修改现有文件时与周围命名保持一致，避免同文件内混用两种组件写法。

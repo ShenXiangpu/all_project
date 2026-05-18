@@ -1,0 +1,72 @@
+.swiperFather {
+  height: 270px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+
+  :global {
+    .swiper-container {
+      --swiper-navigation-color: #1890ff; /* 单独设置按钮颜色 */
+      --swiper-navigation-size: 46px; /* 设置按钮大小 */
+    }
+  }
+}
+
+.con {
+  height: 100%;
+}
+
+.item {
+  padding: 10px;
+
+  .content {
+    height: 100%;
+    border: 1px solid #d9d9d9;
+    h3 {
+      padding-left: 10px;
+      padding-right: 10px;
+      margin: 10px 0 5px 0;
+      height: 36px;
+      line-height: 18px;
+      overflow: hidden;
+      font-weight: bold;
+      color: #4784ac;
+    }
+
+    .text {
+      height: 110px;
+      overflow: hidden;
+      padding-left: 20px;
+      padding-right: 20px;
+      // background: url(../images/index_05.png) no-repeat left 7px;
+      margin-bottom: 5px;
+      line-height: 20px;
+      min-height: 20px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      > span {
+        height: 100%;
+        display: inline-block;
+      }
+    }
+
+    .imgDiv {
+      height: 80px;
+      text-align: center;
+      padding-top: 0px;
+
+      img {
+        max-height: 80px;
+        max-width: 100%;
+      }
+    }
+  }
+
+  .content:hover {
+    cursor: pointer;
+  }
+}

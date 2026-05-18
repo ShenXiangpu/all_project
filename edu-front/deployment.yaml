@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: edu-test-metallb
+  namespace: zkxy-edu-test
+spec:
+  selector:
+    app: edu-test
+  type: LoadBalancer
+  loadBalancerIP: 172.18.0.215
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edu-test
+  namespace: zkxy-edu-test
+  labels:
+    app: edu-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edu-test
+  template:
+    metadata:
+      labels:
+        app: edu-test
+    spec:
+      imagePullSecrets:
+        - name: private-repository
+      containers:
+        - name: edu-test #pod的名称，必须字段，名称唯一且对象创建后不可以被修改
+          image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE} #镜像仓库的路径/镜像的名称:镜像的标签
+          imagePullPolicy: Always #Always(总是去仓库下载),Never(从不去仓库下载),IfNotPresent(如果本地没有就去仓库下载),默认是"IfNotPresent"
+          ports:
+            - containerPort: 80 #containerPort是pod内部容器的端口，targetPort映射到containerPort;例如，mysql服务需要暴露3306端口，redis暴露6379端口
+          volumeMounts:
+            - mountPath: /etc/localtime
+              name: tz-config
+            # - name: edu-test-certs
+            #   mountPath: /etc/nginx/ssl
+            #   readOnly: true
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              memory: 2Gi
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: /etc/localtime
+            type: ""
+        # - name: edu-test-certs
+        #   secret:
+        #     secretName: edu-test-certs
+# ---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+  # name: my-nginx
+  # namespace: zkxy-sensor-test
+  # annotations:
+    # kubernetes.io/ingress.class: "nginx"
+    # nginx.ingress.kubernetes.io/proxy-body-size: "6000M"
+# spec:
+  # tls:
+  # - hosts:
+    # - iot-test.chip-cloud.com
+    # secretName: iot-test-certs
+  # rules:
+  # - host: iot-test.chip-cloud.com
+    # http:
+      # paths:
+      # - path: /
+        # backend:
+          # serviceName: iot-test
+          # servicePort: 80

@@ -1,0 +1,82 @@
+.main {
+  background-color: #fff;
+  padding: 24px;
+  margin-top: 24px;
+  // margin-bottom: 50px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+
+  :global {
+
+    .has-error .ant-checkbox-inner,
+    .has-error .ant-checkbox:hover {
+      background-color: #fff;
+      border-color: #f5222d;
+    }
+  }
+
+  .spanTitle {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+  }
+}
+
+.title {
+  font-weight: bold;
+}
+
+.rd {
+  :global {
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background-color: #d7e6f8;
+    }
+
+    .ant-radio-button-wrapper {
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .ant-radio-button-wrapper {
+      width: 80px;
+      text-align: center;
+    }
+  }
+}
+
+.toolWrap {
+  margin-top: 10px;
+  background-color: rgba(230, 247, 255, 70%);
+}
+
+.toolP {
+  margin-bottom: 0;
+  padding: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.toolDiv {
+  padding: 12px;
+  width: 50%;
+  float: left;
+  background-color: rgba(230, 247, 255, 20%);
+
+  .toolTitle {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(24, 144, 255, 0.2);
+  }
+
+  img {
+    height: 30px;
+  }
+
+  p {
+    margin-bottom: 5px;
+  }
+
+  .toolValue {
+    padding-left: 40px;
+  }
+}

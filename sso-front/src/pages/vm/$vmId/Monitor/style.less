@@ -1,0 +1,46 @@
+.row {
+  display: block;
+  height: 80px;
+  margin: 0 auto;
+  text-align: center;
+
+  .col {
+    display: inline-block;
+    height: 80px;
+    line-height: 80px;
+
+    .icon {
+      display: inline-block;
+      // float: left;
+      height: 100%;
+      margin-right: 5px;
+      margin-top: 0;
+      line-height: 80px;
+      font-size: 62px;
+      vertical-align: middle;
+      box-sizing: border-box;
+    }
+
+    .title {
+      display: inline-block;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .value {
+      display: inline-block;
+      margin-left: 20px;
+
+      > label {
+        color: #8cc153;
+        font-size: 24px;
+        margin-right: 2px;
+      }
+    }
+  }
+}
+
+.middleCol {
+  border-left: 1px solid rgba(24, 144, 255, 0.2);
+  border-right: 1px solid rgba(24, 144, 255, 0.2);
+}

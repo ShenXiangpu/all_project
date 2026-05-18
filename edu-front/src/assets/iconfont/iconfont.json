@@ -1,0 +1,51 @@
+{
+  "id": "4214457",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7588127",
+      "name": "右",
+      "font_class": "you1",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "9245668",
+      "name": "右",
+      "font_class": "you3",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "10949403",
+      "name": "右",
+      "font_class": "you4",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "11882936",
+      "name": "bg-right",
+      "font_class": "bg-right",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "17629111",
+      "name": "右",
+      "font_class": "tubiaozhizuomoban-01",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "26697437",
+      "name": "右_1",
+      "font_class": "you_1",
+      "unicode": "e79c",
+      "unicode_decimal": 59292
+    }
+  ]
+}

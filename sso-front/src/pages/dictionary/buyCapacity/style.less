@@ -1,0 +1,71 @@
+.bannerBox {
+  .title {
+    font-size: 16px;
+    color: #4c4c4c;
+  }
+
+  .progressDiv {
+
+    .progress {
+      width: 600px;
+    }
+
+    :global {
+      .ant-progress-text {
+        display: inline;
+      }
+
+      .ant-progress-show-info .ant-progress-outer {
+        margin-right: 0;
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .sub {
+    display: inline-block;
+  }
+}
+// 套餐容器
+.cardContainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 60px;
+
+  // card容器
+  .itemContainer {
+    margin: 0 20px 20px 0;
+
+    .itemP {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      // padding: 30px;
+      
+
+      .itemTop {
+        font-size: 24px;
+        font-weight: 700;
+        height: 50px;
+        // color: #333;
+      }
+
+      .itemSection {
+        font-size: 20px;
+        font-weight: 500;
+        height: 50px;
+      }
+      
+    }
+
+
+  }
+}

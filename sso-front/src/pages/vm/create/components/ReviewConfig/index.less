@@ -1,0 +1,44 @@
+.main {
+  background-color: #fff;
+  padding: 24px;
+  margin-top: 24px;
+  // margin-bottom: 50px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.85);
+
+  :global {
+    .has-error .ant-checkbox-inner,
+    .has-error .ant-checkbox:hover {
+      background-color: #fff;
+      border-color: #f5222d;
+    }
+  }
+
+  .spanTitle {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+  }
+}
+
+.title {
+  font-weight: bold;
+}
+
+.rd {
+  :global {
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background-color: #d7e6f8;
+    }
+
+    .ant-radio-button-wrapper {
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .ant-radio-button-wrapper {
+      width: 80px;
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,110 @@
+.desp {
+  font: 14px/1.5 "Microsoft YaHei", tahoma, arial, "Hiragino Sans GB",
+    "\5B8B\4F53", sans-serif;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+//>>>>>>>>>>>>>>>>>>>>>>>>>> 图片点击放大样式 start <<<<<<<<<<<<<<<<<<<<<<<<
+.img {
+  // width: 400px;
+  height: 320px;
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in;
+}
+
+.img2 {
+  // width: 400px;
+  height: 320px;
+}
+
+.imgViewBg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1100;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.imgViewDom {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1150;
+  overflow: hidden;
+  outline: 0;
+  -webkit-overflow-scrolling: touch;
+
+  .imgView {
+    height: auto;
+    max-height: 100vh;
+    max-width: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: -webkit-zoom-out;
+    cursor: zoom-out;
+    // -webkit-transition: -webkit-transform 0.2s ease-in-out;
+    // transition: -webkit-transform 0.2s ease-in-out;
+    // -o-transition: transform 0.2s ease-in-out;
+    // transition: transform 0.2s ease-in-out;
+    // transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
+    -webkit-transform-origin: 0 0;
+    -ms-transform-origin: 0 0;
+    transform-origin: 0 0;
+  }
+}
+//>>>>>>>>>>>>>>>>>>>>>>>>>> 图片点击放大样式 end <<<<<<<<<<<<<<<<<<<<<<<<
+
+.rightRow {
+  text-align: right;
+  bottom: -37px;
+}
+
+.centerRow {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.dep {
+  :global(.ant-descriptions-row th) {
+    width: 9%;
+  }
+
+  :global(.ant-descriptions-row td) {
+    width: 24.33%;
+  }
+}
+
+.depForm {
+  padding-top: 12px !important;
+  padding-bottom: 0 !important;
+
+  :global(.ant-form-item) {
+    margin-bottom: 12px;
+  }
+
+  :global(.ant-input),
+  :global(.ant-select-selection) {
+    border: 1px solid #97b8d2;
+  }
+
+  :global(.has-error .ant-input) {
+    border-color: #f5222d;
+  }
+}
+
+.upload {
+  margin-left: 5px;
+
+  :global(.ant-btn) {
+    // color: #97b8d2;
+    // border-color: #97b8d2;
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "FileEditorModal",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./FileEditorModal.js"
+}

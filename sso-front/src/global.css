@@ -1,0 +1,16 @@
+
+@import url('./wmks-all.css');
+
+html, body, :global(#root) {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body {
+  font: 12px/1.5 "Microsoft YaHei",tahoma,arial,'Hiragino Sans GB','\5b8b\4f53',sans-serif;
+  width: 100vw;
+  overflow: hidden;
+  padding-left: calc(100vw - 100%);
+
+}

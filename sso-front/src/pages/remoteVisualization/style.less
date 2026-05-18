@@ -1,0 +1,38 @@
+.iframeContainer {
+  height: calc(100vh - 160px);
+}
+
+.logControl {
+  position: absolute;
+  right: 10px;
+  bottom: 30px;
+
+  :global .ant-btn {
+    opacity: 0.5;
+    > i {
+      color: white;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      border-color: white;
+      opacity: 1;
+    }
+  }
+}
+
+.logTopControl {
+  top: 30px;
+  bottom: auto;
+}
+
+.showMax {
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}

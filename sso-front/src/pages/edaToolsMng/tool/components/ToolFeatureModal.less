@@ -1,0 +1,141 @@
+.panel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, .65);
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
+  position: relative;
+
+  .list {
+    position: relative;
+    display: inline-block;
+    width: 180px;
+    height: 200px;
+    padding-top: 40px;
+    vertical-align: middle;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+
+    -webkit-box-flex: 1;
+    -ms-flex: auto;
+    flex: auto;
+    width: auto;
+    height: auto;
+    min-height: 200px;
+    max-height: 540px;
+    overflow-y: auto;
+
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 8px 12px 9px;
+      overflow: hidden;
+      color: rgba(0, 0, 0, .65);
+      background: #fff;
+      border-bottom: 1px solid #e8e8e8;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .body {
+      position: relative;
+      height: 100%;
+      font-size: 14px;
+      padding: 12px;
+
+      .searchWrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 12px;
+      }
+
+      :global {
+
+        .ant-table-middle>.ant-table-content>.ant-table-header>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-body>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-thead>tr>th,
+        .ant-table-middle>.ant-table-content>.ant-table-header>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-body>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-scroll>.ant-table-header>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-scroll>.ant-table-body>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-left>.ant-table-header>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-right>.ant-table-header>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-left>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td,
+        .ant-table-middle>.ant-table-content>.ant-table-fixed-right>.ant-table-body-outer>.ant-table-body-inner>table>.ant-table-tbody>tr>td {
+          padding: 6px;
+        }
+      }
+    }
+
+    .search {
+      padding-top: 56px;
+    }
+  }
+
+  .operation {
+    display: inline-block;
+    margin: 0 8px;
+    overflow: hidden;
+    vertical-align: middle;
+
+    -webkit-box-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    -ms-flex-item-align: center;
+    align-self: center;
+  }
+}
+
+.btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 14px;
+  border-radius: 4px;
+  display: block;
+}
+
+.formFilter {
+  :global {
+    .ant-form-item {
+      display: flex;
+      margin-right: 0;
+      margin-bottom: 24px;
+      > .ant-form-item-label {
+        width: auto;
+        padding-right: 8px;
+        line-height: 32px;
+      }
+      .ant-form-item-control {
+        line-height: 32px;
+      }
+    }
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+
+  .submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}

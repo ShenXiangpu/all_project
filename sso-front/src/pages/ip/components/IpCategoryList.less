@@ -1,0 +1,74 @@
+.ipWrap {
+  border-top: 1px solid rgba(24, 144, 255, 0.2);
+  > p {
+    height: 24px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+    }
+  }
+
+  .listItem {
+    // padding: 5px;
+    height: 240px;
+
+    .content {
+      height: 100%;
+      padding: 4px;
+      border: 1px solid #d9d9d9;
+
+      h3 {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin: 10px 0 5px 0;
+        height: 36px;
+        line-height: 18px;
+        overflow: hidden;
+        font-weight: bold;
+        color: #4784ac;
+      }
+
+      .text {
+        height: 103px;
+        overflow: hidden;
+        padding-left: 20px;
+        padding-right: 20px;
+        // background: url(../images/index_05.png) no-repeat left 7px;
+        margin-bottom: 5px;
+        line-height: 20px;
+        min-height: 20px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        > span {
+          height: 100%;
+          display: inline-block;
+        }
+      }
+
+      .imgDiv {
+        height: 80px;
+        text-align: center;
+        padding-top: 0px;
+
+        img {
+          max-height: 80px;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+
+  .listItem:hover {
+    cursor: pointer;
+  }
+}

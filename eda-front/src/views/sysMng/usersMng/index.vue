@@ -1,0 +1,968 @@
+<template>
+  <div class="app-container">
+    <border-container
+      v-permission="['sso:user:listUsers']"
+      class="marginBottom10 border-container"
+      :height="15"
+      :isShowTitle="false"
+      :isBgShow="false"
+    >
+      <template #content>
+        <div style="padding: 20px 0 10px 10px">
+          <el-form ref="queryFormRef" :model="queryParams" :inline="true">
+            <el-form-item prop="keyWord" label="用户名称">
+              <el-input
+                class="inputClass"
+                v-model="queryParams.keyWord"
+                placeholder="请输入用户名称"
+                clearable
+                @keyup.enter="handleQueryInitPage"
+              />
+            </el-form-item>
+            <el-form-item prop="roleId" label="角色">
+              <el-select
+                class="inputClass"
+                v-model="queryParams.roleId"
+                @change="handleQueryInitPage"
+                placeholder="请选择角色"
+              >
+                <el-option
+                  v-for="item in roleList"
+                  :key="item.roleId"
+                  :label="item.roleName"
+                  :value="item.roleId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item v-if="userRolesNames == '系统最高管理员'" prop="companyId" label="企业名称">
+              <el-select
+                class="inputClass"
+                v-model="queryParams.companyId"
+                @change="handleQueryInitPage"
+                placeholder="请选择企业"
+              >
+                <el-option
+                  v-for="item in companyList"
+                  :key="item.id"
+                  :label="item.companyName"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                type="success"
+                class="editSuccess"
+                icon="el-icon-search"
+                @click="handleQueryInitPage"
+                >搜索</el-button
+              >
+              <el-button
+                type="primary"
+                class="editPrimary"
+                icon="el-icon-refresh"
+                @click="resetQuery"
+                >重置</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </div>
+      </template>
+    </border-container>
+
+    <el-card>
+      <template #header>
+        <div class="flex justify-between">
+          <div>
+            <el-button
+              v-permission="['sso:user:saveUser']"
+              style="margin-right: 20px"
+              type="primary"
+              icon="el-icon-plus"
+              @click="handleAdd"
+              >新增</el-button
+            >
+
+            <el-popconfirm
+              title="确定删除吗？"
+              @onConfirm="handleDeleteIds(ids)"
+              onCancel=""
+            >
+              <el-button
+                v-permission="['sso:user:delUser']"
+                type="danger"
+                icon="el-icon-delete"
+                slot="reference"
+                :disabled="ids && ids.length === 0"
+                >批量删除
+              </el-button>
+            </el-popconfirm>
+          </div>
+          <div class="flex">
+            <!-- <div>
+
+                        </div>
+                        <div>
+
+                        </div> -->
+            <el-button
+              v-permission="['sso:user:downEduUserTemplate']"
+              style="margin-right: 20px"
+              type="info"
+              class="editInfo"
+              size="small"
+              icon="el-icon-download"
+              @click="downLoadFile"
+              >导出模板</el-button
+            >
+            <el-upload
+              v-permission="['sso:user:insertUserBatch']"
+              ref="upload"
+              action
+              :http-request="doUpload"
+              :show-file-list="false"
+              :before-upload="beforeAvatarUpload"
+              :auto-upload="true"
+            >
+              <el-button
+                v-permission="['sso:user:insertUserBatch']"
+                :loading="insertLoading"
+                style="font-size: 12px"
+                slot="trigger"
+                type="info"
+                class="editInfo"
+                icon="el-icon-upload2"
+                >批量导入</el-button
+              >
+            </el-upload>
+          </div>
+        </div>
+      </template>
+
+      <el-table
+        ref="dataTableRef"
+        v-loading="loading"
+        :data="usersList"
+        @selection-change="handleSelectionChange"
+        @row-click="handleRowClick"
+      >
+        <el-table-column type="selection" width="55" align="center" />
+        <el-table-column
+          label="用户名称"
+          prop="userName"
+          min-width="100"
+          align="center"
+        />
+        <el-table-column
+          label="角色名称"
+          prop="roleName"
+          min-width="150"
+          align="center"
+        />
+        <el-table-column
+        v-if="userRolesNames == '系统最高管理员'"
+          label="企业名称"
+          prop="companyName"
+          min-width="150"
+          align="center"
+        />
+
+        <el-table-column
+          label="手机号"
+          prop="phone"
+          min-width="150"
+          align="center"
+        />
+        <el-table-column
+          label="邮箱"
+          prop="email"
+          min-width="180"
+          align="center"
+        />
+        <el-table-column
+          prop="createdAt"
+          label="创建时间"
+          min-width="180"
+          align="center"
+        />
+        <el-table-column
+          v-if="checkPermission(['sso:user:updUser', 'sso:user:delUser'])"
+          label="操作"
+          align="center"
+          fixed="right"
+          min-width="180"
+        >
+          <template #default="scope">
+            <el-button
+              v-permission="['sso:user:updUser']"
+              size="small"
+              type="primary"
+              class="editPrimary marginRight10"
+              @click.stop="handleUpdate(scope.row)"
+            >
+              修改
+            </el-button>
+            
+            <el-popconfirm
+              v-if="userRolesNames != '老师'"
+              title="确定删除吗？"
+              @onConfirm="handleDelete(scope.row)"
+              onCancel=""
+            >
+              <el-button
+                v-permission="['sso:user:delUser']"
+                size="small"
+                type="danger"
+                class="editDanger"
+                slot="reference"
+              >
+                删除
+              </el-button>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <!-- pagination -->
+      <pagination
+        v-if="total > 0"
+        :total="total"
+        :page.sync="queryParams.page"
+        :limit.sync="queryParams.limit"
+        @pagination="searchQuery"
+      />
+    </el-card>
+
+    <el-dialog
+      :title="dialog.title"
+      :visible.sync="dialog.visible"
+      @close="cancel"
+      width="600px"
+    >
+      <el-form
+        ref="dataFormRef"
+        :model="formData"
+        :rules="formDataRules"
+        label-width="150px"
+      >
+        <el-form-item label="用户名称" prop="userName1">
+          <el-input
+            v-model="formData.userName1"
+            id="userName2"
+            style="width: 300px"
+            placeholder="请输入用户名称"
+            show-word-limit
+          />
+        </el-form-item>
+        <el-form-item label="密码" prop="password1">
+          <el-input
+            v-model="formData.password1"
+            id="passwords"
+            type="password"
+            style="width: 300px"
+            placeholder="请输入密码"
+            show-word-limit
+          />
+        </el-form-item>
+        <!-- 权限标识 -->
+        <el-form-item prop="roleName" label="所属角色">
+          <el-select
+            style="width: 300px"
+            v-model="formData.roleName"
+            id="roleId"
+            placeholder="请选择角色"
+            @change="handleRoles"
+          >
+            <el-option
+              v-for="item in roleList"
+              :key="item.roleId"
+              :label="item.roleName"
+              :value="item.roleId"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          v-if="roleName == '企业管理员'"
+          label="企业名称"
+          prop="companyName"
+          :rules="[
+            { required: true, message: '请输入企业名称', trigger: 'blur' },
+          ]"
+        >
+          <el-input
+            v-model="formData.companyName"
+            style="width: 300px"
+            placeholder="请输入企业名称"
+          />
+        </el-form-item>
+        <el-form-item
+          v-if="roleName == '企业管理员'"
+          label="企业英文名称"
+          prop="companyNameEn"
+          :rules="[
+            { required: true, message: '请输入企业英文名称', trigger: 'blur' },
+            {
+              pattern: /^[A-Za-z]*(\s[A-Za-z]*)*$/,
+              message: '请输入企业英文名称',
+            },
+          ]"
+        >
+          <el-input
+            v-model="formData.companyNameEn"
+            style="width: 300px"
+            placeholder="请输入企业英文名称"
+          />
+        </el-form-item>
+        <!-- 权限标识 -->
+        <el-form-item label="手机号" prop="phone">
+          <el-input
+            maxlength="11"
+            style="width: 300px"
+            v-model="formData.phone"
+            placeholder="请输入手机号"
+          />
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email">
+          <el-input
+            m
+            style="width: 300px"
+            v-model="formData.email"
+            placeholder="请输入邮箱"
+          />
+        </el-form-item>
+        <el-form-item
+          v-if="roleName == '学生'"
+          label="学号"
+          prop="studentNum"
+          :rules="[
+            { required: true, message: '请输入学号', trigger: 'blur' },
+            { pattern: /^[0-9]*$/, message: '请输入数字学号' },
+          ]"
+        >
+          <el-input
+            v-model="formData.studentNum"
+            style="width: 300px"
+            placeholder="请输入学号"
+          />
+        </el-form-item>
+        <el-form-item
+          v-if="roleName == '老师'"
+          label="工号"
+          prop="studentNum"
+          :rules="[
+            { required: true, message: '请输入工号', trigger: 'blur' },
+            { pattern: /^[0-9]*$/, message: '请输入数字工号' },
+          ]"
+        >
+          <el-input
+            v-model="formData.studentNum"
+            style="width: 300px"
+            placeholder="请输入工号"
+          />
+        </el-form-item>
+        <el-form-item v-if="roleName == '学生'" label="入学年份" prop="grade">
+          <el-input
+            v-model="formData.grade"
+            style="width: 300px"
+            placeholder="请输入入学年份"
+          />
+        </el-form-item>
+        <el-form-item v-if="roleName == '学生'" label="班级" prop="className">
+          <el-input
+            v-model="formData.className"
+            style="width: 300px"
+            placeholder="请输入班级"
+          />
+        </el-form-item>
+        <!-- <el-form-item label="状态">
+                      <el-radio-group v-model="formData.status">
+                          <el-radio label="1">正常</el-radio>
+                          <el-radio label="0">停用</el-radio>
+                      </el-radio-group>
+                  </el-form-item> -->
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+<script>
+import {
+  createRole,
+  getRoleDetailById,
+  deleteRole,
+  editRole,
+  getRoleList,
+  getListForFont,
+  getMenuList,
+  getRoleMenuList,
+  distributeRoleMenu,
+  saveUser,
+  updUser,
+  listUsers,
+  getUserDetailById,
+  getMe,
+  delUser,
+  downEduUserTemplate,
+  insertUserBatch,
+  getCompanyList,
+} from "@/api/system";
+import { Message } from "element-ui";
+import Pagination from "@/components/Pagination";
+import BorderContainer from "@/components/BorderContainer";
+import { mapGetters } from "vuex";
+import { checkPermission } from "@/utils/validate";
+import { Encrypt } from "@/utils/secret";
+
+export default {
+  components: {
+    Pagination,
+    BorderContainer,
+  },
+  data() {
+    return {
+      checkPermission: checkPermission,
+      roleName: "学生",
+      roleList: [], //
+      usersList: [],
+      queryParams: {
+        keyWord: "",
+        roleId: "",
+        companyId:"",
+        grade: "",
+        className: "",
+        studentNum: "",
+        page: 1,
+        limit: 10,
+      },
+      total: "",
+      dialog: {
+        title: "",
+        visible: false,
+      },
+      formData: {
+        userName1: "", // 父级菜单
+        roleId: "",
+        roleName: "",
+        password1: "",
+        phone: "",
+        studentNum: "",
+        companyNameEn: "",
+        companyName: "",
+        grade: "",
+        className: "",
+        email: "",
+      },
+      loading: false,
+      formDataRules: {
+        userName1: [
+          { required: true, message: "请输入用户名称", trigger: "blur" },
+        ],
+        roleName: [
+          { required: true, message: "请选择角色类型", trigger: "blur" },
+        ],
+        password1: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            pattern:
+              /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/,
+            message: "请输入正确的手机号",
+            trigger: "blur",
+          },
+        ],
+        studentNum: [
+          { required: true, message: "请输入学号", trigger: "blur" },
+          {
+            pattern: /^[0-9]*$/,
+            message: "请输入数字工号",
+          },
+        ],
+        grade: [
+          { required: true, message: "请输入入学年份", trigger: "blur" },
+          {
+            pattern: /^\d{4}$/,
+            message: "请输入正确的年份",
+          },
+        ],
+        className: [{ required: true, message: "请输入班级", trigger: "blur" }],
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "blur" },
+          {
+            pattern:
+              /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}(\.[a-zA-Z]{2,6})?)$/,
+            message: "请输入合法邮箱",
+            trigger: "blur",
+          },
+        ],
+      },
+      ids: [],
+      menuDialogVisible: false,
+      resourceOptions: [],
+      // 选中的角色
+      checkedRole: {
+        id: "",
+        name: "",
+      },
+      menuList: [], // 菜单列表
+      defaultProps: {
+        children: "children",
+        label: "label",
+      },
+      checkMenuKeys: [],
+      defaultCheckedKeys: [], //回显数据
+      roleId: "", //点击资源分配获得id
+      isHas: false,
+      userId: "",
+      insertLoading: false,
+      companyList: [],
+    };
+  },
+  computed: {
+    ...mapGetters(["userRolesNames"]),
+  },
+  created() {
+    this.handleQuery();
+  },
+  mounted() {
+    this.queryRoleList();
+    this.queryCompanyList();
+  },
+  methods: {
+    queryCompanyList() {
+      getCompanyList().then((res) => {
+        let resData = res && res.resData;
+        this.companyList = resData;
+      });
+    },
+    //
+    handleRoles(val) {
+      // 定义一个roleName变量，用于存储角色名称
+      let roleName = "";
+      // 定义一个roleList变量，用于存储角色列表
+      let roleList = this.roleList;
+      // 定义一个roleItem变量，用于存储角色列表中满足条件的角色信息
+      let roleItem =
+        roleList &&
+        roleList.length > 0 &&
+        roleList.filter((i) => {
+          // 判断val变量是否等于i.roleId
+          return val == i.roleId;
+        });
+      // 将roleItem变量中的角色名称赋值给roleName变量
+      roleName = roleItem && roleItem.length > 0 && roleItem[0].roleName;
+      // 将roleName变量赋值给this.roleName变量
+      this.roleName = roleName;
+      // 将roleItem变量中的角色Id赋值给this.formData.roleId变量
+      this.formData.roleId = roleItem[0].roleId;
+    },
+    beforeAvatarUpload(file) {
+      // const isLt5M = file.size / 1024 / 1024 < 5;
+      // const file_type = file.name.replace(/.+\./, "");
+      // if (this.fileType.indexOf(file_type) === -1) {
+      //   this.$message.error("上传图片只能是 jpg/png/jpeg 格式!");
+      //   return false;
+      // }
+      // if (!isLt5M) {
+      //   this.$message.error("上传头像图片大小不能超过 5MB!");
+      //   return false;
+      // }
+      return true;
+    },
+    doUpload(item) {
+      let FormDatas = new FormData();
+      FormDatas.append("file", item.file);
+      this.insertLoading = true;
+      this.$message.success("正在导入");
+      insertUserBatch(FormDatas)
+        .then((res) => {
+          console.log(res);
+          if (res && res.flag) {
+            this.handleQuery();
+            this.insertLoading = false;
+            this.$message.success("导入成功");
+          } else {
+            this.$message.error("上传出错");
+            this.insertLoading = false;
+          }
+        })
+        .finally(() => {
+          this.insertLoading = false;
+        });
+    },
+    // downLoadFile
+
+    downLoadFile() {
+      downEduUserTemplate().then((res) => {
+        if (res && res.size === 0) {
+          this.$message.success("当前数据为空");
+          return;
+        }
+        const blob = new Blob([res.data], {
+          type: "application/vnd.ms-excel;charset=utf-8",
+        }); // 构造一个blob对象来处理数据，并设置文件类型
+
+        let fileName = decodeURI(res.headers["content-disposition"]);
+
+        if (fileName) {
+          fileName = fileName.substring(fileName.indexOf("=") + 1);
+        }
+        const href = URL.createObjectURL(blob); //创建新的URL表示指定的blob对象
+        const a = document.createElement("a"); //创建a标签
+        a.style.display = "none";
+        a.href = href; // 指定下载链接
+        a.download = fileName; //指定下载文件名
+        document.body.appendChild(a);
+        a.click(); //触发下载
+        URL.revokeObjectURL(a.href); //释放URL对象
+        document.body.removeChild(a);
+        this.$message.success("下载成功");
+      });
+    },
+
+    //查询角色列表
+    async queryRoleList() {
+      const params = {
+        roleType: "2",
+        keyWord: "",
+      };
+      this.loading = true;
+
+      const res = await getRoleList(params);
+      if (res && res.flag) {
+        this.loading = false;
+        const resData = res.resData;
+        let roleList = [];
+        resData.map((i) => {
+          let item = {
+            roleId: i.id.toString(),
+            roleName: i.cnName,
+          };
+          roleList.push(item);
+        });
+        this.roleList = roleList;
+      } else {
+        this.loading = false;
+      }
+    },
+
+    handleAdd() {
+      let _this = this;
+      let dialog = {
+        title: "添加",
+        visible: true,
+      };
+      this.initParams();
+      _this.dialog = dialog;
+    },
+
+    initParams() {
+      let formData = {
+        userName1: "", // 父级菜单
+        roleId: "",
+        password1: "",
+        phone: "",
+        studentNum: "",
+        companyNameEn: "",
+        companyName: "",
+        grade: "",
+        className: "",
+        email: "",
+      };
+      this.formData = formData;
+      this.roleName = "";
+    },
+    initQueryParams() {
+      let queryParams = {
+        keyWord: "",
+        roleId: "",
+        grade: "",
+        className: "",
+        studentNum: "",
+        limit: 10,
+        page: 1,
+      };
+      this.queryParams = queryParams;
+    },
+    // handleRoleName(roleName) {
+    //     let roleList = this.roleList
+    //     let itemList = roleList && roleList.length > 0 && roleList.filter(i => {
+    //         return i.roleName == roleName
+    //     })
+    //     return itemList && itemList.length > 0 && itemList[0].roleId
+
+    // },
+    submitForm(e) {
+      this.$refs.dataFormRef.validate(async (valid) => {
+        if (valid) {
+          let password = Encrypt(this.formData.password1);
+          this.formData.password1 = password;
+          // let roleName = this.formData.roleName
+          // let roleId = this.handleRoleName(roleName)
+          // this.formData.roleId = roleId
+
+          let formData = {
+            userName: this.formData.userName1, // 父级菜单
+            roleId: this.formData.roleId,
+            password: password,
+            phone: this.formData.phone,
+            studentNum: this.formData.studentNum || "",
+            grade: this.formData.grade || "",
+            className: this.formData.className || "",
+            email: this.formData.email || "",
+          };
+          let title = this.dialog.title;
+          if (this.formData.roleId == 2) {
+            formData.companyName = this.formData.companyName || "";
+            formData.companyNameEn = this.formData.companyNameEn || "";
+          }
+          const res =
+            title == "添加"
+              ? await saveUser(formData)
+              : await updUser({ id: this.userId, ...formData });
+          if (res && res.flag) {
+            Message.success(title == "添加" ? "添加成功" : "修改成功");
+            this.cancel(); //关闭弹框并初始化
+            // this.handleEquForm = handleEquForm
+            this.initParams();
+            this.handleQuery({});
+          } else {
+            Message.success(res.errMessage);
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    //选菜单时获得菜单id
+    handleRoleList(e) {
+      const checkMenuKeys = this.$refs.resourceRef.getCheckedKeys();
+      this.checkMenuKeys = checkMenuKeys;
+    },
+
+    searchQuery(e) {
+      this.queryParams.page = e.page;
+      this.queryParams.limit = e.limit;
+      this.handleQuery();
+    },
+    handleQueryInitPage() {
+      this.queryParams.page = 1;
+      // this.queryParams.limit = 10;
+      this.handleQuery();
+    },
+    //查询角色列表
+    async handleQuery() {
+      const params = this.queryParams;
+      this.loading = true;
+      const res = await listUsers(params);
+      if (res && res.flag) {
+        this.loading = false;
+        const resData = res.resData;
+        this.usersList = resData.list;
+        this.total = resData.total;
+        this.page = resData.pageNum;
+      } else {
+        this.loading = false;
+      }
+    },
+
+    cancel() {
+      let _this = this;
+      let dialog = {
+        visible: false,
+      };
+      _this.initParams();
+      _this.dialog = dialog;
+      _this.$refs.dataFormRef.resetFields();
+    },
+
+    //点击修改按钮
+    handleUpdate(item) {
+      if (item && item.id) {
+        getUserDetailById({ id: item.id }).then((res) => {
+          let resData = res.resData;
+          // formData.roleId = formData.roleName
+          this.userId = item.id;
+          let formData = {
+            userName1: resData.userName, // 父级菜单
+            roleId: resData.roleId,
+            roleName: resData.roleName,
+            password1: resData.password,
+            phone: resData.phone,
+            studentNum: resData.studentNum,
+            grade: resData.grade,
+            className: resData.className,
+            email: resData.email,
+          };
+          if (resData.roleId == 2) {
+            formData.companyName = resData.companyName || "";
+            formData.companyNameEn = resData.companyNameEn || "";
+          }
+
+          this.formData = formData;
+          this.roleName = formData && formData.roleName;
+          let dialog = {
+            title: "修改",
+            visible: true,
+          };
+          this.dialog = dialog;
+        });
+      } else {
+        Message.error("数据有误！");
+      }
+    },
+    //单删
+    async handleDelete(item) {
+      let id = item.id;
+      const res = await delUser({ id });
+      if (res && res.flag) {
+        Message.success("删除成功");
+        this.handleQuery({});
+      }
+    },
+    //多删除
+    async handleDeleteIds(ids) {
+      let id = ids.toString();
+      const res = await delUser({ id });
+      if (res && res.flag) {
+        Message.success("删除成功");
+        this.handleQuery({});
+      }
+    },
+    //重置，初始换条件和查询
+    resetQuery() {
+      this.$refs.queryFormRef.resetFields();
+      //this.initQueryParams();
+      this.queryParams.page = 1;
+      this.handleQuery({});
+    },
+    // 获取多删除ids
+    handleSelectionChange(e) {
+      let rowList = e;
+      if (rowList && rowList.length > 0) {
+        let ids = [];
+        rowList.map((i) => {
+          ids.push(i.id);
+        });
+        this.ids = ids;
+      } else {
+        this.ids = [];
+      }
+    },
+
+    handleRowClick(e) {},
+    //点击资源分配，打开弹出框，搜索获得角色菜单（all）和角色菜单
+    async showRoleMenuDialog(e) {
+      this.roleId = e.id;
+      const res = await getRoleMenuList(e.id); // 回显已选菜单
+      if (res && res.flag) {
+        const resData = res.resData;
+        const roleMenuList = this.handleTreeList(resData); // 获得需要回显的菜单，需要对父级菜单进行过滤
+        const defaultCheckedKeys = this.handleRoleMenuList(roleMenuList);
+        this.defaultCheckedKeys = defaultCheckedKeys.toString().split(",");
+      } else {
+        Message.error("角色查询有误");
+      }
+      this.handleMenuQuery({});
+      this.menuDialogVisible = true;
+    },
+
+    // 处理回显菜单获得，id - List
+    // https://blog.csdn.net/Eric_web/article/details/112393238?spm=1001.2101.3001.6661.1&utm_medium=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-112393238-blog-106552478.pc_relevant_multi_platform_whitelistv3&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-2%7Edefault%7ECTRLIST%7ERate-1-112393238-blog-106552478.pc_relevant_multi_platform_whitelistv3&utm_relevant_index=1
+    // elementUI的el-tree的赋值回显问题 // 神来之笔，这种方式正好处理里回显时去除父级菜单未完全选择的问题
+
+    handleRoleMenuList(roleMenuList) {
+      const defaultCheckedKeys = [];
+      roleMenuList.map((i) => {
+        let ids = [];
+        ids.push(i.id);
+        if (i.children && i.children.length > 0) {
+          ids = this.handleRoleMenuList(i.children);
+        }
+        defaultCheckedKeys.push(ids);
+      });
+      return defaultCheckedKeys;
+    },
+
+    // 查询权限列表
+    async handleMenuQuery(params) {
+      this.loading = true;
+      const res = await getListForFont(params);
+      if (res && res.flag) {
+        this.loading = false;
+        const resData = res.resData;
+        // return true
+        // 初始话新增顶级列表
+        this.menuList = this.handleTreeList(resData);
+      } else {
+        this.loading = false;
+        // return false
+      }
+    },
+
+    handleTreeList(list) {
+      const children = [];
+      list &&
+        list.length > 0 &&
+        list.map((item) => {
+          const optionItem = {
+            id: item.value || "",
+            label: item.label,
+            disabled: item.disabled || false,
+          };
+          if (item.children && item.children.length > 0) {
+            optionItem.children = this.handleTreeList(item.children);
+          }
+          children.push(optionItem);
+        });
+      return children;
+    },
+  },
+};
+</script>
+<style scoped lang="scss">
+.border-container {
+  ::v-deep {
+    .left-circle {
+      width: 16px;
+      height: 32px;
+      border-radius: 0 16px 16px 0;
+
+      .circle-center {
+        width: 8px;
+        height: 16px;
+        border-radius: 0 8px 8px 0;
+        top: 6px;
+      }
+    }
+
+    .right-circle {
+      width: 16px;
+      height: 32px;
+      border-radius: 16px 0 0 16px;
+      right: -2px;
+
+      .circle-center {
+        width: 8px;
+        height: 16px;
+        border-radius: 8px 0 0 8px;
+        top: 6px;
+      }
+    }
+  }
+}
+
+.inputClass {
+  width: 200px;
+}
+
+.search {
+  padding: 18px 0 0 10px;
+  margin-bottom: 10px;
+  border-radius: 2px;
+  /* border: 1px solid var(--el-card-border-color); */
+}
+</style>

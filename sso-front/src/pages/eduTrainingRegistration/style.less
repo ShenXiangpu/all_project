@@ -1,0 +1,62 @@
+@import url('../../utils/utils.less');
+
+
+.padding20 {
+    padding: 0 10px;
+}
+
+.textStyle:hover {
+    border: 1px solid #1890ff;
+}
+
+.textStyle {
+    height: 26px;
+    line-height: 24px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    box-sizing: border-box;
+}
+
+.textStyle1 {
+    background-color: #1890ff;
+    color: #fff;
+}
+
+.textStyle2 {}
+
+:global {
+
+    .ant-col-md-5,
+    .ant-col-lg-5,
+    .ant-col-xl-5 {
+        width: 20%
+    }
+}
+
+
+
+.card {
+    margin-bottom: 20px;
+    width: 300px;
+    // height: 180px;
+   
+    :global {
+
+        .ant-card-hoverable {
+            cursor: auto;
+        }
+        .ant-tag {
+            margin-right: 0;
+            margin-left: 20px;
+        }
+
+        .ant-card-body {
+            padding: 10px;
+        }
+
+        .ant-card-cover {
+            background-color: #ddd;
+        }
+
+    }
+}

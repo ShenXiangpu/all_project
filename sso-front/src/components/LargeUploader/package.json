@@ -1,0 +1,6 @@
+{
+  "name": "LargeUploader",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./LargeUploader.js"
+}

@@ -1,0 +1,89 @@
+@import "~antd/es/style/themes/default.less";
+
+.main {
+  :global {
+    .ant-descriptions-row>td {
+      padding-bottom: 8px;
+    }
+
+    .ant-page-header-heading-extra {
+      flex-direction: column;
+    }
+
+    .ant-card-bordered {
+      border: 0;
+    }
+  }
+}
+
+.pageHeader {
+  // margin: -24px -24px 0px;
+
+  :global(.ant-page-header-heading-extra > * + *) {
+    margin-left: 8px;
+  }
+
+  .moreInfo {
+    display: flex;
+    justify-content: space-between;
+    width: 60px;
+  }
+}
+
+@media screen and (max-width: @screen-sm) {
+  .stepDescription {
+    left: 8px;
+  }
+
+  .pageHeader {
+    :global {
+      .ant-pro-page-header-wrap-row {
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+.formFilter {
+  // padding-top: 12px;
+
+  :global {
+    .ant-form-item {
+      display: flex;
+      margin-right: 0;
+      margin-bottom: 24px;
+
+      >.ant-form-item-label {
+        width: auto;
+        padding-right: 8px;
+        line-height: 32px;
+      }
+
+      .ant-form-item-control {
+        line-height: 32px;
+      }
+    }
+
+    .ant-form-item-control-wrapper {
+      flex: 1;
+    }
+  }
+
+  .submitButtons {
+    display: block;
+    margin-bottom: 24px;
+    white-space: nowrap;
+  }
+}
+
+.sureBtn {
+  background-color: #fa7821;
+  border-color: #ed711f;
+  margin-right: 10px;
+}
+
+.sureBtn:hover,
+.sureBtn:focus {
+  background-color: #ed711f;
+  border-color: #d6681e;
+}

@@ -1,0 +1,111 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: eda-cloud # 正式线上环境
+  namespace: zkxy
+spec:
+  selector:
+    app: eda-cloud
+  type: NodePort
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80 #port是k8s集群内部访问service的端口，即通过clusterIP:port可以访问到某个service
+      targetPort: 80 #容器的端口(最根本的端口)，与制作容器时暴露的端口一致(DockerFile中EXPOSE)
+      nodePort: 30501 #nodePort是外部访问k8s集群中service的端口，通过nodeIP:nodePort可以从外部访问到某个service;有效端口范围:30000-32767
+    - name: https
+      protocol: TCP
+      port: 443 #port是k8s集群内部访问service的端口，即通过clusterIP:port可以访问到某个service
+      targetPort: 443 #容器的端口(最根本的端口)，与制作容器时暴露的端口一致(DockerFile中EXPOSE)
+      nodePort: 30500 #nodePort是外部访问k8s集群中service的端口，通过nodeIP:nodePort可以从外部访问到某个service;有效端口范围:30000-32767
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eda-cloud
+  namespace: zkxy
+  labels:
+    app: eda-cloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eda-cloud
+  template:
+    metadata:
+      labels:
+        app: eda-cloud
+    spec:
+      imagePullSecrets:
+        - name: private-repository
+      containers:
+        - name: eda-cloud #pod的名称，必须字段，名称唯一且对象创建后不可以被修改
+          image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE} #镜像仓库的路径/镜像的名称:镜像的标签
+          imagePullPolicy: Always #Always(总是去仓库下载),Never(从不去仓库下载),IfNotPresent(如果本地没有就去仓库下载),默认是"IfNotPresent"
+          ports:
+            - name: http #containerPort是pod内部容器的端口，targetPort映射到containerPort;例如，mysql服务需要暴露3306端口，redis暴露6379端口
+              containerPort: 80  #containerPort是pod内部容器的端口，targetPort映射到containerPort;例如，mysql服务需要暴露3306端口，redis暴露6379端口
+            - name: https #containerPort是pod内部容器的端口，targetPort映射到containerPort;例如，mysql服务需要暴露3306端口，redis暴露6379端口
+              containerPort: 443 #containerPort是pod内部容器的端口，targetPort映射到containerPort;例如，mysql服务需要暴露3306端口，redis暴露6379端口
+          volumeMounts:
+            - mountPath: /etc/localtime
+              name: tz-config
+            - name: eda-certs
+              mountPath: /etc/nginx/ssl
+              readOnly: true
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              memory: 2Gi
+      volumes:
+        - name: tz-config
+          hostPath:
+            path: /etc/localtime
+            type: ""
+        - name: eda-certs
+          secret:
+            secretName: eda-certs
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: eda-cloud-lb
+  namespace: zkxy
+  annotations:
+    lb.kubesphere.io/v1alpha1: openelb
+    protocol.openelb.kubesphere.io/v1alpha1: layer2
+    eip.openelb.kubesphere.io/v1alpha2: eip-pool
+spec:
+  selector:
+    app: eda-cloud
+  type: LoadBalancer
+  loadBalancerIP: 172.18.0.80
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eda-cloud-metallb
+  namespace: zkxy
+spec:
+  selector:
+    app: eda-cloud
+  type: LoadBalancer
+  loadBalancerIP: 172.18.0.90
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+    - name: https
+      port: 443
+      targetPort: 443

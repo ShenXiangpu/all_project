@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>高性能EDA云平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #index {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #index .top {
+            width: 100%;
+            height: 40vh;
+            background-color: rgb(24, 144, 255);
+        }
+
+        #index .bottom {
+            width: 100%;
+            height: 60vh;
+            background-color: #fff;
+        }
+
+        #index .content {
+            width: 80%;
+            /* height: 50%; */
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 0 3px rgb(24, 144, 255);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 3vw;
+        }
+
+        .content-title {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: 40px;
+            text-align: center;
+            color: rgb(24, 144, 255);
+            font-size: 26px;
+        }
+
+        .content .content-form {
+            margin-top: 20px;
+        }
+
+        .content .content-form div {
+            margin-top: 15px;
+        }
+
+        .content-form .input {
+            width: 80%;
+            height: 36px;
+            margin: 0 auto;
+            border-radius: 20px;
+        }
+
+        .content-form .input input {
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+            padding: 0 10px 0 20px;
+            box-sizing: border-box;
+            outline: none;
+            background: transparent;
+            border: none;
+            outline: medium;
+            font-size: 16px;
+            color: #999;
+            border-radius: 20px;
+            box-shadow: 0 0 3px rgb(24, 144, 255);
+        }
+
+        .content-form .input input:focus {
+            outline: none;
+            background-color: transparent;
+        }
+
+        .pass.input {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .pass.input input {
+            width: 60%;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .content-form .btn {
+            width: 80%;
+            height: 60px;
+            margin: 0 auto;
+        }
+
+        button {
+            border: 0;
+            background-color: rgb(24, 144, 255);
+            color: #fff;
+            border-radius: 20px;
+            width: 40%;
+        }
+
+        .pass button {
+            border-radius: 0 20px 20px 0;
+        }
+
+        .content-form .btn button {
+            width: 100%;
+            height: 36px;
+            margin: 0 auto;
+            color: #fff;
+            background-color: rgb(24, 144, 255);
+        }
+
+        #msg {
+            width: 80%;
+            height: 20px;
+            margin: 0 auto;
+            color: red;
+            line-height: 20px;
+            margin-top: 10px;
+            padding-left: 10px;
+            font-size: 14px;
+        }
+
+        input:-internal-autofill-selected {
+            /* -webkit-text-fill-color: #FFFFFF !important; */
+            transition: background-color 5000s ease-in-out 0s !important;
+        }
+
+        #index2 {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background-color: rgb(24, 144, 255);
+        }
+
+        #index2 div {
+            color: #fff;
+            box-shadow: 0 0 3px rgb(24, 144, 255);
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="index" style="display:block">
+        <div class="top">
+            <image src="https://www.chip-cloud.com/filespath/images/email.png" />
+        </div>
+        <div class="content">
+            <div class="content-title">高性能EDA云平台</div>
+            <!-- <form> -->
+            <div class="content-form">
+                <div class="input phone">
+                    <input name="phone" id="phone" type="text" placeholder="请输入手机号" onblur="testPhone()"
+                        maxlength="11" />
+                </div>
+                <div class="input pass">
+                    <input name="code" id="code" type="text" placeholder="请输入验证码" maxlength="6" /><button id="codeBtn"
+                        onclick="getCode()">获取验证码</button>
+                </div>
+                <div id="msg"></div>
+                <div class="btn submit">
+                    <button onclick="submit()">体验</button>
+                </div>
+            </div>
+            <!-- </form> -->
+
+
+        </div>
+        <div class="bottom"></div>
+    </div>
+    <div id="index2" style="display: none;">
+        <div>正在跳转...</div>
+    </div>
+    <script type="text/javascript">
+        var timer = 60;
+        var phone = '';
+        var code = '';
+        var setInt = null;
+        var loading = false;//
+        var targetUrl = ''; // 跳转地址
+        function msg(msg) {
+            const msgStr = document.getElementById('msg');
+            msgStr.innerHTML = msg
+        }
+        //验证手机号
+        function testPhone() {
+            var reg = new RegExp(/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/)
+            phone = document.getElementById('phone').value
+            if (!phone.trim()) {
+                msg('请输入手机号')
+                return false
+            } else if (!reg.test(phone)) {
+                msg('请输入合法手机号')
+                return false
+            }
+            return true
+        }
+
+        function getCode() {
+            if (!setInt) {
+                if (testPhone()) {
+                    msg('')
+                    // 获取验证码
+                    startRequestCode('GET', `https://eda.chip-cloud.com/service/sso-service/sso/login/send?phone=${phone}`, true, null)
+                    time();
+                    var userInfo = {
+                        'phone': phone,
+                    }
+                    // 获取跳转地址
+                    startRequest("POST", 'https://eda.chip-cloud.com/service/zkxy-vmware-api/iccad/add', true, userInfo)
+
+                } else {
+
+                }
+            }
+        }
+        //验证验证码
+        function testCode() {
+            var reg = new RegExp(/\d{6}$/)
+            code = document.getElementById('code').value
+            if (!code.trim()) {
+                msg('验证码不能为空')
+                return false
+            } else if (!reg.test(code)) {
+                msg('请输入6位验证码')
+                return false
+            }
+            return true
+        }
+        //计时器
+        function time() {
+            setInt = setInterval(() => {
+                timer--;
+                const code = document.getElementById('codeBtn')
+                code.innerHTML = timer;
+                if (timer == 0) {
+                    clearInterval(setInt)
+                    setInt = null;
+                    timer = 60;
+                    code.innerHTML = '获取验证码';
+                }
+            }, 1000)
+        }
+
+        var xmlhttp;
+        //创建xmlhttprequest对象
+        function createXMLHttpRequest() {
+            xmlhttp = new XMLHttpRequest();  //这里要判断IE的写法
+        }
+
+        function handleLoading(loading) {
+            if (!loading) {
+                let indexStyle = document.getElementById('index').style
+                let index2Style = document.getElementById('index2').style
+                indexStyle.display = 'none'
+                index2Style.display = 'block'
+            } else {
+                let indexStyle = document.getElementById('index').style
+                let index2Style = document.getElementById('index2').style
+                indexStyle.display = 'block'
+                index2Style.display = 'none'
+            }
+        }
+        // 获取地址
+        function startRequest(method, url, flag, obj) {
+            createXMLHttpRequest();
+            xmlhttp.open(method, url, flag);
+            xmlhttp.setRequestHeader("content-type", "application/json");
+            xmlhttp.setRequestHeader('chipcloud_innercall', 'true')
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200 || xmlhttp.status == 0) {
+                        var txt = xmlhttp.responseText;
+                        txt = JSON.parse(txt)
+                        if (txt && txt.flag) {
+                            console.log(txt);
+                            // loading = true
+                            // handleLoading(loading)
+                            targetUrl = txt.resData
+                            localStorage.setItem('targetUrl',targetUrl)
+                        }
+                    } else {
+                    }
+                } else {
+                }
+            };
+            xmlhttp.send(JSON.stringify(obj));
+        }
+
+        // 获取验证码
+        function startRequestCode(method, url, flag, obj) {
+            createXMLHttpRequest();
+            xmlhttp.open(method, url, flag);
+            xmlhttp.setRequestHeader("content-type", "application/json");
+            // xmlhttp.setRequestHeader('chipcloud_innercall','true')
+            xmlhttp.onreadystatechange = function () {
+                console.log('xmlhttp', xmlhttp)
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200 || xmlhttp.status == 0) {
+                        var txt = xmlhttp.responseText;
+                        txt = JSON.parse(txt)
+
+                    }
+                }
+            };
+            xmlhttp.send(obj);
+        }
+
+
+        function startRequestTestAndCode(method, url, flag, obj) {
+            createXMLHttpRequest();
+            xmlhttp.open(method, url, flag);
+            xmlhttp.setRequestHeader("content-type", "application/json");
+            xmlhttp.setRequestHeader('chipcloud_innercall', 'true')
+            xmlhttp.onreadystatechange = function () {
+                // handleLoading(loading)
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200 || xmlhttp.status == 0) {
+                        var txt = xmlhttp.responseText;
+                        txt = JSON.parse(txt)
+                        if (txt && txt.flag) {
+                            // loading = true
+                            // handleLoading(loading)
+                            let resData = txt.resData
+                            let token = resData.access_token
+                            if (token) {
+                                console.log(url)
+                                setTimeout(() => {
+                                    let targetUrl = localStorage.getItem('targetUrl')
+                                    window.location.href = targetUrl
+                                }, 100);
+                            }
+                        } else {
+                            let errMessage = txt.errMessage
+                            msg('手机号或验证码错误')
+                        }
+                    } else {
+                        // loading = false
+                        // handleLoading(loading)
+                        // msg('出错了')
+                    }
+                } else {
+                    // loading = false
+                    // handleLoading(loading)
+                    // msg('出错了')
+                }
+            };
+            xmlhttp.send(JSON.stringify(obj));
+        }
+
+
+        function submit() {
+            if (!testPhone()) {
+                return
+            }
+            if (!testCode()) {
+                return
+            }
+            var userInfo = {
+                'phone': phone,
+                'smsCode': code
+            }
+            startRequestTestAndCode("POST", 'https://eda.chip-cloud.com/service/sso-service/sso/mobileLogin', true, userInfo)
+            // if(testPhone()) {
+
+            // }
+        }
+    </script>
+</body>
+
+</html>

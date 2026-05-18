@@ -1,0 +1,178 @@
+.textOverflow() {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.textOverflowMulti(@line: 3, @bg: #fff) {
+  position: relative;
+  max-height: @line * 1.5em;
+  margin-right: -1em;
+  padding-right: 1em;
+  overflow: hidden;
+  line-height: 1.5em;
+  text-align: justify;
+
+  &::before {
+    position: absolute;
+    right: 14px;
+    bottom: 0;
+    padding: 0 1px;
+    background: @bg;
+    content: '...';
+  }
+
+  &::after {
+    position: absolute;
+    right: 14px;
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+    background: white;
+    content: '';
+  }
+}
+
+// mixins for clearfix
+// ------------------------
+.clearfix() {
+  zoom: 1;
+
+  &::before,
+  &::after {
+    display: table;
+    content: ' ';
+  }
+
+  &::after {
+    clear: both;
+    height: 0;
+    font-size: 0;
+    visibility: hidden;
+  }
+}
+
+
+.flex {
+  display: flex;
+}
+
+.flexColumn {
+  flex-direction: column;
+}
+
+.justifyCenter {
+  justify-content: center;
+}
+
+.justifyEnd {
+  justify-content: flex-end;
+}
+
+.justifyBetween {
+  justify-content: space-between;
+}
+
+.justifyAround {
+  justify-content: space-around;
+}
+
+.alignCenter {
+  align-items: center;
+}
+
+.viewText {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+  // font-size: 14px;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.font20 {
+  font-size: 20px;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.font17 {
+  font-size: 17px;
+}
+
+.font16 {
+  font-size: 16px;
+}
+
+.font14 {
+  font-size: 14px;
+}
+
+.marginTop10 {
+  margin-top: 10px;
+}
+
+.marginTop20 {
+  margin-top: 20px;
+}
+
+.marginBottom10 {
+  margin-bottom: 10px;
+}
+
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.marginRight20 {
+  margin-right: 20px;
+}
+
+.marginRight10 {
+  margin-right: 10px;
+}
+
+.primaryColor {
+  color: #1890ff;
+}
+
+.primaryColory {
+  color: #ffc550;
+}
+
+.primaryColoro {
+  color: #ff6958;
+}
+
+.primaryBgColoro {
+  background-color: #ff6958;
+}
+
+.primaryBgColory {
+  background-color: #ffc550;
+}
+
+
+
+.primaryBgColor {
+  background-color: #1890ff;
+}
+
+.fontW7 {
+  font-weight: 700;
+}
+
+.color9 {
+  color: #999;
+}
+
+.pointer {
+  cursor: pointer;
+}

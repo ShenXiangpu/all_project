@@ -1,0 +1,4 @@
+deployment.yml merge=mydriver
+.rancher-pipeline.yml merge=mydriver
+Dockerfile merge=mydriver
+docker/nginx.conf merge=mydriver

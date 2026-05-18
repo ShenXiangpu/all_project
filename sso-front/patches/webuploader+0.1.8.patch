@@ -1,0 +1,32 @@
+diff --git a/node_modules/webuploader/dist/webuploader.fis.js b/node_modules/webuploader/dist/webuploader.fis.js
+index 2349319..55e06ce 100644
+--- a/node_modules/webuploader/dist/webuploader.fis.js
++++ b/node_modules/webuploader/dist/webuploader.fis.js
+@@ -1897,6 +1897,7 @@ module.exports = (function( root, factory ) {
+                         accept: $.isPlainObject( accept ) ? [ accept ] : accept,
+                         swf: opts.swf,
+                         runtimeOrder: opts.runtimeOrder,
++                        webkitdirectory: opts.webkitdirectory,
+                         id: this
+                     });
+ 
+@@ -3288,7 +3289,7 @@ module.exports = (function( root, factory ) {
+ 
+         // 添加默认配置项
+         $.extend( Uploader.options, {
+-
++            webkitdirectory:"",
+ 
+             /**
+              * @property {Boolean} [prepareNextFile=false]
+@@ -4894,6 +4895,10 @@ module.exports = (function( root, factory ) {
+                     background: '#ffffff'
+                 });
+ 
++                if (opts.webkitdirectory) {
++                    input.attr( 'webkitdirectory', "" );
++                }
++
+                 if ( opts.multiple ) {
+                     input.attr( 'multiple', 'multiple' );
+                 }

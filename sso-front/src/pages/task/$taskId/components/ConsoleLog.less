@@ -1,0 +1,42 @@
+.logWrap {
+  margin: 0 auto;
+  height: 600px;
+  overflow: auto;
+  min-height: 300px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  white-space: pre-wrap;
+  color: #ffffff;
+  font-size: 80%;
+
+  pre {
+    overflow: unset;
+  }
+
+  .logControl {
+    position: absolute;
+    right: 30px;
+    top: 70px;
+
+    :global .ant-btn {
+      opacity: 0.5;
+
+      >i {
+        color: white;
+      }
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-color: white;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.modal {
+  :global(.ant-modal-body) {
+    padding: 2px;
+  }
+}

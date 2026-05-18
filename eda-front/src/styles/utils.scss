@@ -1,0 +1,576 @@
+@use "sass:math";
+
+//默认设计稿的宽度
+$designWidth: 1920;
+//默认设计稿的高度
+$designHeight: 1080;
+
+//px转为vw的函数
+
+@function vw($px) {
+  @return math.div($px , $designWidth) * 100vw;
+}
+
+//px转为vh的函数
+
+@function vh($px) {
+  @return math.div($px , $designHeight) * 100vh;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.view-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100%;
+  text-overflow: ellipsis;
+  // font-size: 14px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font20 {
+  font-size: 20px;
+}
+.font19 {
+  font-size: 19px;
+}
+
+.font18 {
+  font-size: 18px;
+}
+
+.font17 {
+  font-size: 17px;
+}
+
+.font16 {
+  font-size: 16px;
+}
+.font15 {
+  font-size: 15px;
+}
+.font14 {
+  font-size: 14px;
+}
+
+.marginBottom10 {
+  margin-bottom: 10px;
+}
+
+.marginBottom20 {
+  margin-bottom: 20px;
+}
+
+.marginRight20 {
+  margin-right: 20px;
+}
+
+.marginRight10 {
+  margin-right: 10px;
+}
+.padding20 {
+  padding: 20px;
+}
+
+.primaryColor {
+  color: #10abb9;
+}
+.primaryColorb {
+  color: #409EFF;
+}
+.primaryColorg {
+  color: rgb(20, 194, 50);
+}
+
+.primaryColory {
+  color: #ffc550;
+}
+.primaryColorr {
+  color: #f82109;
+}
+.primaryColoro {
+  color: #ff6958;
+}
+.primaryColorw {
+  color: #fff;
+}
+
+.primaryBgColorw {
+  background-color: #fff;
+}
+
+.primaryBgColoro {
+  background-color: #ff6958;
+}
+
+.primaryBgColory {
+  background-color: #ffc550;
+}
+.primaryBgColorb {
+  background-color: #409EFF;
+}
+
+.primaryBgColorp {
+  background-color: rgb(172, 140, 254);
+}
+
+
+
+.primaryBgColor {
+  background-color: #10abb9;
+}
+
+.primaryBorder {
+  border: 1px solid #10abb9;
+}
+
+.fontW7 {
+  font-weight: 700;
+}
+
+.fontW6 {
+  font-weight: 600;
+}
+
+// card样式调整
+.content-top {
+  .el-form-item {
+    margin-bottom: 0px
+  }
+
+  margin-bottom: 10px;
+}
+
+
+.title-decration {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.title-decration::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 60%;
+  margin-right: 2px;
+  background: rgb(64, 158, 255);
+  border-radius: 2px;
+  // position: absolute;
+}
+
+.title-decration2 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.title-decration2::before {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 60%;
+  margin-right: 2px;
+  background: #009caa;
+  border-radius: 2px;
+  // position: absolute;
+}
+
+.title-width4 {
+  width: 4px;
+}
+
+.title-width2 {
+  width: 2px;
+}
+
+.color9 {
+  color: #999;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.not-allowed {
+  cursor: not-allowed;
+}
+
+.bg1 {
+  background-color: #333;
+}
+
+.index-color {
+  color: #666;
+}
+
+//防止字体限制效果遮住 input
+.endInput ::v-deep .el-input__inner {
+  padding-right: 45px;
+}
+
+//防止字体限制效果遮住 TextArea
+.endTextArea ::v-deep .el-input__inner {
+  padding-bottom: 36px;
+}
+
+@media screen and (max-width: 1440px) {
+
+  .endInput ::v-deep .el-input__inner {
+    padding-right: 55px;
+  }
+
+  //防止字体限制效果遮住 TextArea
+  .endTextArea ::v-deep .el-input__inner {
+    padding-bottom: 36px;
+  }
+}
+
+
+
+$btn-info-color: #10ABB9;
+$btn-info-bg-color: #C5F6FA;
+
+$btn-info-color-disabled: #FFFFFF;
+$btn-info-bg-color-disabled: #B1B1B1;
+
+::v-deep {
+  .editInfo.el-button--info {
+    background: $btn-info-bg-color;
+    border: 1px solid $btn-info-bg-color;
+    color: $btn-info-color;
+  }
+
+  .editInfo.el-button--info.is-disabled:hover {
+    background: $btn-info-bg-color-disabled;
+    border-color: $btn-info-bg-color-disabled;
+    color: $btn-info-color-disabled;
+  }
+
+  .editInfo.el-button--info.is-disabled {
+    background: $btn-info-bg-color-disabled;
+    border-color: $btn-info-bg-color-disabled;
+    color: $btn-info-color-disabled;
+  }
+}
+
+
+$btn-warning-color: #FC6644;
+$btn-warning-bg-color: #FCC3B6;
+$btn-warning-color-disabled: #FFFFFF;
+$btn-warning-bg-color-disabled: #B1B1B1;
+
+::v-deep {
+  .editWarning.el-button--warning {
+    background: $btn-warning-bg-color;
+    border: 1px solid $btn-warning-bg-color;
+    color: $btn-warning-color;
+  }
+
+  .editWarning.el-button--warning.is-disabled:hover {
+    background: $btn-warning-bg-color-disabled;
+    border-color: $btn-warning-bg-color-disabled;
+    color: $btn-warning-color-disabled;
+  }
+
+  .editWarning.el-button--warning.is-disabled {
+    background: $btn-warning-bg-color-disabled;
+    border-color: $btn-warning-bg-color-disabled;
+    color: $btn-warning-color-disabled;
+  }
+}
+
+$btn-danger-color: #DB5A5A;
+$btn-danger-bg-color: #FCD7D7;
+
+
+// $btn-danger-color-disabled: #DB5A5A;
+// $btn-danger-bg-color-disabled: #FCD7D7;
+
+$btn-danger-color-disabled: #FFFFFF;
+$btn-danger-bg-color-disabled: #B1B1B1;
+
+::v-deep {
+  .editDanger.el-button--danger {
+    background: $btn-danger-bg-color;
+    border: 1px solid $btn-danger-bg-color;
+    color: $btn-danger-color;
+  }
+
+  .editDanger.el-button--danger.is-disabled:hover {
+    background: $btn-danger-bg-color-disabled;
+    border-color: $btn-danger-bg-color-disabled;
+    color: $btn-danger-color-disabled;
+  }
+
+  .editDanger.el-button--danger.is-disabled {
+    background: $btn-danger-bg-color-disabled;
+    border-color: $btn-danger-bg-color-disabled;
+    color: $btn-danger-color-disabled;
+  }
+}
+
+$btn-success-color: #67B87A;
+$btn-success-bg-color: #E4F9E9;
+
+// $btn-success-color-disabled: #67B87A;
+// $btn-success-bg-color-disabled: #E4F9E9;
+
+$btn-success-color-disabled: #FFFFFF;
+$btn-success-bg-color-disabled: #B1B1B1;
+
+::v-deep {
+  .editSuccess.el-button--success {
+    background: $btn-success-bg-color;
+    border: 1px solid $btn-success-bg-color;
+    color: $btn-success-color;
+  }
+
+  .editSuccess.el-button--success.is-disabled:hover {
+    background: $btn-success-bg-color-disabled;
+    border-color: $btn-success-bg-color-disabled;
+    color: $btn-success-color-disabled;
+  }
+
+  .editSuccess.el-button--success.is-disabled {
+    background: $btn-success-bg-color-disabled;
+    border-color: $btn-success-bg-color-disabled;
+    color: $btn-success-color-disabled;
+  }
+}
+
+$btn-primary-color: #499AC9;
+$btn-primary-bg-color: #D4EFFF;
+
+// $btn-danger-color-disabled: #499AC9;
+// $btn-danger-bg-color-disabled: #D4EFFF;
+
+$btn-danger-color-disabled: #FFFFFF;
+$btn-danger-bg-color-disabled: #B1B1B1;
+
+::v-deep {
+  .editPrimary.el-button--primary {
+    background: $btn-primary-bg-color;
+    border: 1px solid $btn-primary-bg-color;
+    color: $btn-primary-color;
+  }
+
+  .editPrimary.el-button--primary.is-disabled:hover {
+    background: $btn-danger-bg-color-disabled;
+    border-color: $btn-danger-bg-color-disabled;
+    color: $btn-danger-color-disabled;
+  }
+
+  .editPrimary.el-button--primary.is-disabled {
+    background: $btn-danger-bg-color-disabled;
+    border-color: $btn-danger-bg-color-disabled;
+    color: $btn-danger-color-disabled;
+  }
+}
+
+
+//默认样式
+$btn-default-color: #3589e5;
+$btn-default-bg-color: #c4dffe;
+
+// $btn-danger-color-disabled: #499AC9;
+// $btn-danger-bg-color-disabled: #D4EFFF;
+
+$btn-default-color-disabled: #FFFFFF;
+$btn-default-bg-color-disabled: #B1B1B1;
+
+::v-deep {
+  .editDefault.el-button--default {
+    background: $btn-default-bg-color;
+    border: 1px solid $btn-default-bg-color;
+    color: $btn-default-color;
+  }
+
+  .editDefault.el-button--default.is-disabled:hover {
+    background: $btn-danger-bg-color-disabled;
+    border-color: $btn-danger-bg-color-disabled;
+    color: $btn-danger-color-disabled;
+  }
+
+  .editDefault.el-button--default.is-disabled {
+    background: $btn-danger-bg-color-disabled;
+    border-color: $btn-danger-bg-color-disabled;
+    color: $btn-danger-color-disabled;
+  }
+}
+
+
+.switchStyle.el-switch.is-checked .el-switch__core {
+  width: 56px !important;
+  height: 22px !important;
+  border-radius: 15px;
+
+  &::after {
+    top: 1px;
+    left: 52px !important;
+    width: 18px;
+    height: 18px;
+    border-radius: 15px;
+  }
+
+}
+
+.switchStyle {
+  height: 24px;
+  line-height: 26px;
+
+
+  .el-switch__label {
+    width: 42px !important;
+    height: 26px !important;
+    position: absolute;
+    border-radius: 16px;
+    display: none;
+    color: #fff;
+    font-size: 12px !important;
+
+    &--left {
+      z-index: 9;
+      left: 16px
+    }
+
+
+    &--right {
+      z-index: 9;
+      left: -10px
+    }
+
+
+    &.is-active {
+      display: block
+    }
+  }
+
+  .el-switch__label * {
+    line-height: 1;
+    font-size: 12px;
+    display: inline-block;
+  }
+
+
+  .el-switch__core {
+    width: 56px !important;
+    height: 22px !important;
+    border-radius: 15px;
+
+    &::after {
+      top: 1px;
+      width: 18px;
+      height: 18px;
+      border-radius: 15px;
+    }
+
+  }
+
+
+
+  // ::v-deep {
+  //   .el-switch.is-checked .el-switch__core::after {
+  //     left: 58px ;
+  //   }
+
+  // }
+
+
+
+  .is-checked .el-switch &__core &::after {
+    margin-left: -21px
+  }
+}
+
+.v-html-width {
+  width: 800px;
+}
+
+.el-input-edu-400 {
+  width: 400px;
+}
+
+
+$gray: rgb(244, 244, 244);
+
+::v-deep {
+  .el-card-question {
+
+    // width: 700px;
+    .el-card__header {
+      padding: 10px;
+      font-size: 16px;
+      background: $gray;
+    }
+  }
+}
+
+
+.aside-icon {
+  // display: none;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: -28px;
+  top: 20%;
+  z-index: 1000;
+  // transform: translateY(-50%);
+  background-size: 40px;
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+  border-left: none;
+}
+
+.aside-icon-close {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  right: -28px;
+  top: 20%;
+  z-index: 1000;
+  // transform: translateY(-50%);
+  background-size: 40px;
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
+
+  border-left: none;
+}

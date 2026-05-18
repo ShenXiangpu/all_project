@@ -1,0 +1,115 @@
+.rd {
+  :global {
+    .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+      background-color: #d7e6f8;
+    }
+
+    .ant-radio-button-wrapper {
+      // height: 40px;
+      // line-height: 40px;
+      height: 32px;
+      line-height: 32px;
+    }
+
+    .ant-radio-button-wrapper {
+      // width: 184px;
+      width: 150px;
+      text-align: center;
+    }
+  }
+
+  img {
+    height: 30px;
+  }
+
+  .synopsysSvg {
+    font-size: 52px;
+  }
+}
+
+.select {
+  // margin-left: 10px;
+  width: 300px;
+}
+
+.tip {
+  // font-size: 12px;
+  // margin-left: 20px;
+  color: rgba(0, 0, 0, 0.85);
+  margin-right: 10px;
+}
+
+.list {
+  padding: 10px 0;
+
+  li {
+    list-style: none;
+    margin: 0;
+  }
+
+  .itemBox {
+    display: inline-block;
+
+    .item {
+      width: 240px;
+      margin-right: 6px;
+      height: auto;
+      font-size: 0;
+      border: 1px solid #dbdbdb;
+      display: inline-block;
+      position: relative;
+      border-radius: 2px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      box-sizing: border-box;
+
+      .tool {
+        padding: 15px;
+        vertical-align: top;
+        float: none;
+        display: inline-block;
+
+        .tit {
+          font-size: 14px;
+          font-weight: bold;
+          text-align: center;
+          max-width: 220px;
+          // margin-bottom: 20px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        :global {
+          .ant-form-item {
+            margin-bottom: unset !important;
+          }
+        }
+      }
+    }
+
+    .item:hover {
+      background-color: #fafafa;
+      border-color: #bfbfbf;
+    }
+
+    .actived,
+    .actived:hover {
+      border: 1px solid #0079db;
+      background-color: #fff;
+    }
+
+    .actived:after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 16px;
+      height: 16px;
+      background-image: url(assets/shopcart.png);
+      background-position: 86.69% 56.64%;
+      background-size: 1837.5% 1700%;
+      background-repeat: no-repeat;
+    }
+  }
+}
