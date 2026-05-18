@@ -8,8 +8,16 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Home',
-    component: { template: '<h1 style="text-align:center;margin-top:100px">欢迎进入系统</h1>' }
+    component: () => import('@/layout/index.vue'),
+    redirect: '/system/menu',
+    children: [
+      { path: 'system/dict', name: 'Dict', component: () => import('@/views/system/dict/index.vue') },
+      { path: 'system/menu', name: 'Menu', component: () => import('@/views/system/menu/index.vue') },
+      { path: 'system/org', name: 'Org', component: () => import('@/views/system/org/index.vue') },
+      { path: 'system/permission', name: 'Permission', component: () => import('@/views/system/permission/index.vue') },
+      { path: 'system/role', name: 'Role', component: () => import('@/views/system/role/index.vue') },
+      { path: 'system/user', name: 'User', component: () => import('@/views/system/user/index.vue') }
+    ]
   }
 ]
 
