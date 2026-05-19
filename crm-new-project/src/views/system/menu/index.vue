@@ -96,10 +96,7 @@ function buildTreeOptions(list) {
 }
 
 const columns = [
-  { title: '菜单名称', key: 'name', minWidth: 200, type: 'expand', children: (row) => {
-    if (row.type === 'BUTTON') return '-'
-    return row.icon ? `${row.name}` : row.name
-  }},
+  { title: '菜单名称', key: 'name', minWidth: 200 },
   { title: '菜单类型', key: 'type', width: 100, render: (row) => {
     const map = { CATALOG: ['warning', '目录'], MENU: ['primary', '菜单'], BUTTON: ['error', '按钮'] }
     const [t, l] = map[row.type] || ['default', row.type]

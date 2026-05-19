@@ -64,15 +64,26 @@ function renderIcon(icon) {
 }
 
 const menuOptions = [
-  { label: '字典管理', key: '/system/dict', icon: renderIcon('BookOutline') },
-  { label: '菜单管理', key: '/system/menu', icon: renderIcon('SettingsOutline') },
-  { label: '组织管理', key: '/system/org', icon: renderIcon('PeopleOutline') },
-  { label: '权限管理', key: '/system/permission', icon: renderIcon('KeyOutline') },
-  { label: '角色管理', key: '/system/role', icon: renderIcon('ShieldOutline') },
-  { label: '用户管理', key: '/system/user', icon: renderIcon('ReaderOutline') }
+  {
+    label: '系统管理',
+    key: '/system',
+    icon: renderIcon('SettingsOutline'),
+    children: [
+      { label: '字典管理', key: '/system/dict', icon: renderIcon('BookOutline') },
+      { label: '菜单管理', key: '/system/menu', icon: renderIcon('SettingsOutline') },
+      { label: '组织管理', key: '/system/org', icon: renderIcon('PeopleOutline') },
+      { label: '权限管理', key: '/system/permission', icon: renderIcon('KeyOutline') },
+      { label: '角色管理', key: '/system/role', icon: renderIcon('ShieldOutline') },
+      { label: '用户管理', key: '/system/user', icon: renderIcon('ReaderOutline') }
+    ]
+  }
 ]
 
-const activeKey = computed(() => route.path)
+const activeKey = computed(() => {
+  const path = route.path
+  if (path.startsWith('/system')) return path
+  return '/system'
+})
 
 function handleMenuSelect(key) {
   router.push(key)
