@@ -40,7 +40,6 @@
           </n-button>
         </n-form-item>
       </n-form>
-      <div class="login-tip">测试账号: admin / admin123</div>
     </div>
   </div>
 </template>
@@ -156,10 +155,4 @@ async function handleLogin() {
   font-size: 24px;
 }
 
-.login-tip {
-  text-align: center;
-  color: #999;
-  font-size: 12px;
-  margin-top: 16px;
-}
 </style>

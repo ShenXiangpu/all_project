@@ -27,9 +27,12 @@ export async function login(req: Request, res: Response): Promise<void> {
 
     // 验证密码（这里简化处理，直接比较，实际应该用 bcrypt）
     // 如果数据库有加密密码则使用 bcrypt.compare
+    const uPassword = user.password
+      ? await bcrypt.hash(password, 10)
+      : password;
     const isPasswordValid = user.password
-      ? await bcrypt.compare(password, user.password)
-      : password === 'admin123'; // Mock 数据默认密码
+      ? await bcrypt.compare(password, uPassword)
+      : password === '123456'; // Mock 数据默认密码
 
     if (!isPasswordValid) {
       res.status(401).json(fail(401, '用户名或密码错误'));

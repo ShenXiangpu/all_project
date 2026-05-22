@@ -45,3 +45,16 @@ export async function getUserRoles(userId: number): Promise<string[]> {
   );
   return rows.map((row: any) => row.role_key);
 }
+/**
+ * 获取用户权限
+ */
+export async function getUserPermissions(userId: number): Promise<string[]> {
+  const [rows] = await pool.execute<any[]>(
+    `SELECT p.permission_key FROM sys_permission p
+     INNER JOIN sys_role_permission rp ON p.id = rp.permission_id
+     INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id
+     WHERE ur.user_id = ? AND p.status = '1'`,
+    [userId]
+  );
+  return rows.map((row: any) => row.permission_key);
+}
